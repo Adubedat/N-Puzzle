@@ -1,21 +1,30 @@
-// IFNDEF !!!!!!!!
+#ifndef SOLVER_HPP
+# define SOLVER_HPP
 
 #include "Grid.hpp"
 
 class Solver {
 public:
-    Solver(Grid* start_grid /*, void (*f) heuristic*/);
+    Solver(Grid* start, int (*heuristic)(Grid*));
     virtual ~Solver();
 
-    void explore();
-    void solve();
-    bool isFinal()
+    void        explore();
+    void        solve();
+    void        calculateCost(Grid*);
+    static bool compareCosts(const Grid*, const Grid*);
+    bool        isFinal(Grid*) const;
+    void        display() const;
+
 
 private:
-    // heuristic        _heuristic;
-    std::vector<Grid*>   _opened;
-    std::vector<Grid*>   _closed;
+    Solver() = default;
+    Grid*       _generateSolution(size_t size);
+
+    int                 (*_heuristic)(Grid*);
     Grid*               _finalGrid;
+    std::vector<Grid*>  _opened;
+    std::vector<Grid*>  _closed;
     bool                _success;
 
-}
+};
+#endif
