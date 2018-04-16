@@ -10,7 +10,6 @@ public:
 
     void        explore();
     void        solve();
-    void        calculateCost(Grid*);
     static bool compareCosts(const Grid*, const Grid*);
     bool        isFinal(Grid*) const;
     void        display() const;

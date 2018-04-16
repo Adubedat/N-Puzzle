@@ -12,11 +12,14 @@ Grid::~Grid(){
 std::vector<Grid*> Grid::expand() const{
     std::vector<Grid*> children;
 
-    if (_emptyPos.x >= 0)
+    if (_emptyPos.x > 0)
+        children.push_back(_child({-1,0}));
+    if (_emptyPos.x < _size - 1)
         children.push_back(_child({1,0}));
-    // Todo
-
-
+    if (_emptyPos.y > 0)
+        children.push_back(_child({0,-1}));
+    if (_emptyPos.y < _size - 1)
+        children.push_back(_child({0,1}));
     return children;
 }
 

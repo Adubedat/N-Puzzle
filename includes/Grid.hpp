@@ -19,7 +19,7 @@ public:
 
     std::vector<Grid*>              expand() const;
     void                            setCost(const int cost);
-    int                             getCost() const;
+    void                            calculateCost(Grid*, int (*)(Grid*));
     size_t                          getSize() const;
     void                            swap(pos dst);
 
