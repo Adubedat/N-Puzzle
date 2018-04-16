@@ -10,7 +10,7 @@ Grid* const             GenerateRandomGrid(int const &size) {
     }
 
     std::shuffle(matrix.begin(), matrix.end(), std::default_random_engine(seed));
-    return (new Grid(size, matrix, 0));
+    return (new Grid(size, matrix));
 }
 
 Grid* const             GenerateGridFromFile(std::string const &src) {
@@ -42,7 +42,7 @@ Grid*                   parseFile(std::ifstream &ifs) {
         std::cout << "Unvalid grid description, too much numbers" << std::endl;
     else if (v.size() < size * size)
         std::cout << "Unvalid grid description, not enough numbers" << std::endl;
-    return (new Grid(size, v, 0));
+    return (new Grid(size, v));
 }
 
 void                    parseLine(std::string &line, std::vector<int> &v) {

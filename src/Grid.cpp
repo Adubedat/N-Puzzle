@@ -5,6 +5,14 @@ Grid::Grid(size_t size): _size(size), _matrix(size * size) {
     _cost = -1;
 }
 
+Grid::Grid(size_t size, std::vector<int> matrix) :
+    _size(size),
+    _matrix(matrix) {
+
+    _nbSteps = 0;
+    _cost = -1;
+}
+
 Grid::~Grid(){
     //TODO
 }

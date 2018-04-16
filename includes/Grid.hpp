@@ -4,10 +4,10 @@
 #include <iostream>
 #include <vector>
 
-struct Pos{
+typedef struct  Pos{
     int x;
     int y;
-};
+}               pos;
 
 pos   operator+(const pos&, const pos&);
 
@@ -15,6 +15,7 @@ class Grid {
 
 public:
     Grid(size_t size);
+    Grid(size_t size, std::vector<int> matrix);
     virtual ~Grid();
 
     std::vector<Grid*>              expand() const;
