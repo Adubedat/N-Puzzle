@@ -1,25 +1,36 @@
+# include <iostream>
+# include <vector>
 
-typedef struct Pos{
+struct Pos{
     int x;
     int y;
-}              pos;
+};
 
 class Grid {
 
 public:
-    Grid(size_t size, int ......);
-    virtual ~Grid();
 
-    std::vector<Grid*>              expand();
-    void                            setCost(const int cost);
+    Grid(size_t const &size, std::vector<int> &matrix, int const &cost);
+    virtual ~Grid() = default;
+
+    //std::vector<Grid*>            expand();
+    //void                          setCost(const int cost);
+
+    std::string const               toString() const;
+
 
 private:
-    Grid();
-    pos                             _emptyPos;
-    std::vector<std::vector<int> >  _matrix;
+
+    Grid() = default;
+
+    Pos const                       searchEmptyPos() const;
+
+    size_t const                    _size;
+    Pos const                       _emptyPos;
+    std::vector<int>                _matrix;
     // ???                          _hash;
     std::vector<Grid*>              _history;
-    int                             _nbSteps;
-    int                             _cost;
+    int const                       _nbSteps;
+    int const                       _cost;
     // heuristic
-}
+};
