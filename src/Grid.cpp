@@ -1,16 +1,19 @@
 #include "Grid.hpp"
 
-Grid::Grid(size_t size): _size(size), _matrix(size * size) {
+Grid::Grid(size_t size, std::vector<int> matrix): _size(size), _matrix(matrix){
     _nbSteps = 0;
+    _emptyPos = _searchEmptyPos();
     _cost = -1;
+    // Calculate cost TODO
 }
 
-Grid::Grid(size_t size, std::vector<int> matrix) :
-    _size(size),
-    _matrix(matrix) {
-
-    _nbSteps = 0;
-    _cost = -1;
+Grid::Grid(const Grid* src){
+    _size = src->_size;
+    _matrix = src->_matrix;
+    _emptyPos = src->_emptyPos;
+    _history = src->_history;
+    _nbSteps = src->_nbSteps;
+    _cost = src->_cost;
 }
 
 Grid::~Grid(){
@@ -62,8 +65,8 @@ std::string const           Grid::toString() const {
     return (str);
 }
 
-void Grid::setCost(const int cost){
-    _cost = cost;
+void Grid::calculateCost(Grid* finalGrid, int (*heuristic)(Grid*)){
+    _cost = _nbSteps + heuristic(finalGrid);
 }
 
 int Grid::getCost() const{
@@ -76,12 +79,15 @@ size_t  Grid::getSize() const{
 
 // Swaps emptyPos with the neighboring tile located at distance dst
 void Grid::swap(pos dst) {
-    if ((_emptyPos + dst).x >= _size || (_emptyPos + dst).y >= _size)
-        throw std::out_of_range("Trying to swap out of the grid.");
     (*this)[_emptyPos] = (*this)[_emptyPos + dst];
+    (*this)[_emptyPos + dst] = 0;
+    _emptyPos = _emptyPos + dst;
+    // TODO update cost
 }
 
 int& Grid::operator[](pos position){
+    if (position.x < 0 || position.x >= _size || position.y < 0 || position.y >= _size)
+        throw std::out_of_range("Trying to access an element out of the grid.");
     return _matrix[position.y * this->_size + position.x];
 }
 
@@ -89,16 +95,12 @@ bool    Grid::operator==(Grid* rhs) const{
     return _matrix == rhs->_matrix;
 }
 
-Grid*   Grid::_child(pos emptyPos)const{
-    Grid* clone = new Grid(this->_size);
-    clone->_matrix = this->_matrix; //Possible?
-    clone->_emptyPos = this->_emptyPos;
-    clone->_history = this->_history;
-    clone->_history.push_back(this);
-    clone->_nbSteps = this->_nbSteps + 1;
-
-    // Swap
-    return clone;
+Grid*   Grid::_child(pos dst)const{
+    Grid* child = new Grid(this);
+    child->_history.push_back(this);
+    child->_nbSteps += 1;
+    child->swap(dst);
+    return child;
 }
 
 pos     operator+(const pos& lhs, const pos&rhs){

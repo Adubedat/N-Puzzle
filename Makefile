@@ -68,5 +68,8 @@ re: fclean all
 
 ac: all clean
 
+test: all
+	@./$(NAME) puzzles/test
+
 
 .PHONY: all clean fclean re

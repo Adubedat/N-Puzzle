@@ -61,7 +61,7 @@ void    Solver::display() const{
 Grid*   Solver::_generateSolution(size_t size){
     Grid* solution = new Grid(size);
     // TODO
-
+    // A faire dans Grid ??
 
     return solution;
 }
