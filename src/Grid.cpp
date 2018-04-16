@@ -5,6 +5,14 @@ Grid::Grid(size_t size): _size(size), _matrix(size * size) {
     _cost = -1;
 }
 
+Grid::Grid(size_t size, std::vector<int> matrix) :
+    _size(size),
+    _matrix(matrix) {
+
+    _nbSteps = 0;
+    _cost = -1;
+}
+
 Grid::~Grid(){
     //TODO
 }
@@ -21,6 +29,37 @@ std::vector<Grid*> Grid::expand() const{
     if (_emptyPos.y < _size - 1)
         children.push_back(_child({0,1}));
     return children;
+}
+
+Pos const                   Grid::_searchEmptyPos() const {
+
+    struct Pos  emptyPos;
+
+    for (std::vector<int>::const_iterator it = _matrix.begin(); it != _matrix.end(); it++) {
+
+        if (*it == 0) {
+            emptyPos.x = (it - _matrix.begin()) % _size;
+            emptyPos.y = (it - _matrix.begin()) / _size;
+        }
+    }
+    return (emptyPos);
+}
+
+std::string const           Grid::toString() const {
+
+    std::string str;
+
+    for (int i = 0; i < _matrix.size(); i++) {
+        if (i % _size == 0 && i != 0)
+            str += "\n";
+        else if (i != 0)
+            str += " | ";
+        str += std::to_string(_matrix.at(i));
+        if (_matrix.at(i) < 10)
+            str += " ";
+    }
+
+    return (str);
 }
 
 void Grid::setCost(const int cost){

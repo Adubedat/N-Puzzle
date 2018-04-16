@@ -1,10 +1,8 @@
-#include "Solver.hpp"
+#include "GenerateGrid.hpp"
 
 int main(int argc, char** argv){
 
-    // Grid* start = new Grid(3);
-    //
-    // Solver solver(start, NULL);
-    // solver.solve();
-    // solver.display();
+    Grid* start = GenerateGridFromFile(argv[1]);
+    std::cout << start->toString() << std::endl;
+
 }
