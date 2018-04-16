@@ -1,36 +1,46 @@
-# include <iostream>
-# include <vector>
+#ifndef GRID_HPP
+# define GRID_HPP
+
+#include <iostream>
+#include <vector>
 
 struct Pos{
     int x;
     int y;
 };
 
+pos   operator+(const pos&, const pos&);
+
 class Grid {
 
 public:
+    Grid(size_t size);
+    virtual ~Grid();
 
-    Grid(size_t const &size, std::vector<int> &matrix, int const &cost);
-    virtual ~Grid() = default;
-
-    //std::vector<Grid*>            expand();
-    //void                          setCost(const int cost);
-
+    std::vector<Grid*>              expand() const;
+    void                            setCost(const int cost);
+    int                             getCost() const;
+    size_t                          getSize() const;
+    void                            swap(pos dst);
     std::string const               toString() const;
 
+    int&                            operator[](pos);
+    bool                            operator==(Grid* rhs) const;
 
 private:
-
     Grid() = default;
+    Grid*                           _child(pos emptyPos)const ;
+    Pos const                       _searchEmptyPos() const;
 
-    Pos const                       searchEmptyPos() const;
-
-    size_t const                    _size;
-    Pos const                       _emptyPos;
+    size_t                          _size;
     std::vector<int>                _matrix;
+    pos                             _emptyPos;
+
     // ???                          _hash;
-    std::vector<Grid*>              _history;
-    int const                       _nbSteps;
-    int const                       _cost;
-    // heuristic
+    std::vector<const Grid*>        _history;
+    int                             _nbSteps;
+    int                             _cost;
+
 };
+
+#endif
