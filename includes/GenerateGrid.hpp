@@ -23,5 +23,6 @@ Grid* const             GenerateGridFromFile(std::string const &src);
 Grid*                   parseFile(std::ifstream &ifs);
 void                    parseLine(std::string &line, std::vector<int> &v);
 int                     parseWord(std::string::iterator &it);
+void                    checkMatrixNumbers(std::vector<int> matrix, int const &size);
 
 #endif

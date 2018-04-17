@@ -2,7 +2,14 @@
 
 int main(int argc, char** argv){
 
-    Grid* start = GenerateGridFromFile(argv[1]);
+    Grid* start;
+    
+    try {
+        start = GenerateGridFromFile(argv[1]);
+    } catch (std::exception &e) {
+        std::cout << e.what() << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
     start->swap({1,0});
     start->swap({0,1});
     std::cout << start->toString() << std::endl;
