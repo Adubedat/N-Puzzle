@@ -20,12 +20,16 @@ LDLIBS =
 SRC_NAME =	main.cpp \
 			Grid.cpp \
 			GenerateGrid.cpp \
+			Heuristic.cpp \
+			Solver.cpp
 
 
 OBJ_NAME = $(SRC_NAME:.cpp=.o)
 
 INC_NAME = 	Grid.hpp \
-			GenerateGrid.hpp
+			GenerateGrid.hpp \
+			Heuristic.hpp \
+			Solver.hpp
 
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))

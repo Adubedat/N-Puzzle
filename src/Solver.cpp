@@ -1,7 +1,7 @@
 #include "Solver.hpp"
 
 
-Solver::Solver(Grid* start, int (*heuristic)(Grid*)):
+Solver::Solver(Grid* start, int (*heuristic)(Grid*, Grid*)):
 _heuristic(heuristic), _success(false) {
     _opened.push_back(start);
     _finalGrid = _generateSolution(start->getSize());
@@ -29,24 +29,18 @@ void Solver::explore() {
 }
 
 void Solver::solve() {
-    // TODO
+    std::cout << _finalGrid->toString() << std::endl;
 
 
 
 }
 
-void    Solver::calculateCost(Grid* grid){
-    // Todo
-    int cost = 0;
-    grid->setCost(cost);
-}
-
-bool Solver::compareCosts(const Grid* a, const Grid* b){
-    if (a->getCost() < b->getCost())
-        return true;
-    else
-        return false;
-}
+// bool Solver::compareCosts(const Grid* a, const Grid* b){
+//     if (a->getCost() < b->getCost())
+//         return true;
+//     else
+//         return false;
+// }
 
 
 bool    Solver::isFinal(Grid* grid) const{
@@ -59,9 +53,30 @@ void    Solver::display() const{
 }
 
 Grid*   Solver::_generateSolution(size_t size){
-    Grid* solution = new Grid(size);
-    // TODO
-    // A faire dans Grid ??
+    std::vector<int>    matrix(size * size, 0);
+    int                 len = matrix.size();
+    int                 x = 0;
+    int                 y = 0;
+    int                 i = 1;
 
-    return solution;
+    while (i < len) {
+        while (x < size && matrix[x + y * size] == 0 && i != len) {
+            matrix[x++ + y * size] = i++;
+        }
+        x--;
+        y++;
+        while (y < size && matrix[x + y * size] == 0 && i != len)
+            matrix[x + y++ * size] = i++;
+        y--;
+        x--;
+        while (x >= 0 && matrix[x + y * size] == 0 && i != len)
+            matrix[x-- + y * size] = i++;
+        x++;
+        y--;
+        while (y >= 0 && matrix[x + y * size] == 0 && i != len)
+            matrix[x + y-- * size] = i++;
+        y++;
+        x++;
+    }
+    return (new Grid(size, matrix));
 }

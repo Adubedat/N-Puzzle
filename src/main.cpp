@@ -1,4 +1,6 @@
 #include "GenerateGrid.hpp"
+#include "Heuristic.hpp"
+#include "Solver.hpp"
 
 Grid*   getStartGrid(int const &argc, char** const &argv) {
 
@@ -20,13 +22,17 @@ Grid*   getStartGrid(int const &argc, char** const &argv) {
 
 int     main(int argc, char** argv){
 
-    Grid* start = getStartGrid(argc, argv);
-    start->swap({1,0});
-    start->swap({0,1});
-    std::cout << start->toString() << std::endl;
-    std::cout << std::endl;
+     Grid* start = getStartGrid(argc, argv);
 
-    std::vector<Grid*> children = start->expand();
-    for (std::vector<Grid*>::iterator i = children.begin(); i != children.end(); i++)
-        std::cout << (*i)->toString() << std::endl << std::endl;
+     Solver solver(start, &manhattanDistance);
+
+     solver.solve();
+    // start->swap({1,0});
+    // start->swap({0,1});
+    // std::cout << start->toString() << std::endl;
+    // std::cout << std::endl;
+
+    // std::vector<Grid*> children = start->expand();
+    // for (std::vector<Grid*>::iterator i = children.begin(); i != children.end(); i++)
+        // std::cout << (*i)->toString() << std::endl << std::endl;
 }

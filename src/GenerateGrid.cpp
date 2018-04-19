@@ -1,14 +1,12 @@
 #include "GenerateGrid.hpp"
 
 Grid* const             GenerateRandomGrid(int const &size) {
-
     std::vector<int>  matrix(size * size);
     unsigned    seed = std::chrono::system_clock::now().time_since_epoch().count();
 
     for (int i = 0; i < size * size; i++) {
         matrix[i] = i;
     }
-
     std::shuffle(matrix.begin(), matrix.end(), std::default_random_engine(seed));
     return (new Grid(size, matrix));
 }
@@ -25,7 +23,6 @@ Grid* const             GenerateGridFromFile(std::string const &src) {
 }
 
 Grid*                   parseFile(std::ifstream &ifs) {
-
     std::string         line;
     std::vector<int>    finalVector;
     std::vector<int>    lineVector;
@@ -56,7 +53,6 @@ Grid*                   parseFile(std::ifstream &ifs) {
 }
 
 void                    parseLine(std::string &line, std::vector<int> &v) {
-
     for (std::string::iterator it = line.begin(); it != line.end(); it++) {
         if (*it == '#')
             return ;
@@ -71,26 +67,24 @@ void                    parseLine(std::string &line, std::vector<int> &v) {
 }
 
 int                     parseWord(std::string::iterator &it) {
-
     std::string     str;
 
     while (isdigit(*it)) {
         str += *it;
         ++it;
     }
-    --it;
+    it -= 1;
     return (std::stoi(str));
 }
 
 void                    checkMatrixNumbers(std::vector<int> matrix, int const &size) {
-
     std::sort(matrix.begin(), matrix.end());
-
     for (int i = 0; i < matrix.size(); i++) {
         if (i != matrix[i])
             throw SyntaxException("Error : puzzle must contain every values from 0 to " + std::to_string(size * size - 1));
     }
 }
+
 /*
 **                  Exception class
 */
@@ -100,6 +94,5 @@ SyntaxException::SyntaxException(std::string msg) :
 {}
 
 const char*		SyntaxException::what(void) const throw() {
-
 	return (_msg.c_str());
 }
