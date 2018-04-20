@@ -2,6 +2,7 @@
 # define SOLVER_HPP
 
 #include "Grid.hpp"
+#include <deque>
 
 class Solver {
 public:
@@ -19,11 +20,11 @@ private:
     Solver() = default;
     Grid*       _generateSolution(size_t size);
 
-    int                 (*_heuristic)(Grid*, Grid*);
-    Grid*               _finalGrid;
-    std::vector<Grid*>  _opened;
-    std::vector<Grid*>  _closed;
-    bool                _success;
+    int                     (*_heuristic)(Grid*, Grid*);
+    Grid*                   _finalGrid;
+    std::deque<Grid*>      _opened;
+    std::deque<Grid*>      _closed;
+    bool                    _success;
 
 };
 #endif

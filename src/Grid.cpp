@@ -1,6 +1,9 @@
 #include "Grid.hpp"
 
-Grid::Grid(size_t size, std::vector<int> matrix): _size(size), _matrix(matrix){
+Grid::Grid(size_t size, std::vector<int> matrix):
+    _size(size),
+    _matrix(matrix) {
+
     _nbSteps = 0;
     _emptyPos = _searchEmptyPos();
     _cost = -1;
@@ -34,18 +37,63 @@ std::vector<Grid*> Grid::expand() const{
     return children;
 }
 
-Pos const                   Grid::_searchEmptyPos() const {
+void            Grid::calculateCost(Grid* finalGrid, int (*heuristic)(Grid*)){
+    _cost = _nbSteps + heuristic(finalGrid);
+}
 
-    struct Pos  emptyPos;
+/*
+**      If the grid width is odd, then the number of inversions in a solvable situation is even.
+**      If the grid width is even, and the blank is on an even row counting from the bottom (second-last, fourth-last etc), then the number of inversions in a solvable situation is odd.
+**      If the grid width is even, and the blank is on an odd row counting from the bottom (last, third-last, fifth-last etc) then the number of inversions in a solvable situation is even.
+*/
 
-    for (std::vector<int>::const_iterator it = _matrix.begin(); it != _matrix.end(); it++) {
+bool            Grid::isSolvable() const {
+    int     inversions = 0;
+    int     len = _matrix.size();
+    int     compared_value;
+    bool    onOddRowFromBottom;
 
-        if (*it == 0) {
-            emptyPos.x = (it - _matrix.begin()) % _size;
-            emptyPos.y = (it - _matrix.begin()) / _size;
+    for (int i = 0; i < len; i++) {
+        compared_value = _matrix[i];
+        for (int j = i + 1; j < len; j++) {
+            if (_matrix[j] < compared_value && _matrix[j] != 0)
+                inversions++;
         }
     }
-    return (emptyPos);
+    if ((_size - _emptyPos.y) % 2 == 1)
+        onOddRowFromBottom = true;
+    else
+        onOddRowFromBottom = false;
+    if ((_size % 2 == 1 && inversions % 2 == 0)
+        || ((_size % 2 == 0) && (onOddRowFromBottom == (inversions % 2 == 0))))
+        return (true);
+    else
+        return (false);
+}
+
+
+/*
+**                  Getters and setters
+*/
+
+int             Grid::getCost() const{
+    return _cost;
+}
+
+size_t          Grid::getSize() const{
+    return this->_size;
+}
+
+
+
+int&            Grid::operator[](pos position){
+    if (position.x < 0 || position.x >= _size || position.y < 0 || position.y >= _size)
+        throw std::out_of_range("Trying to access an element out of the grid.");
+    return _matrix[position.y * this->_size + position.x];
+}
+
+bool    Grid::operator==(Grid* rhs) const{
+    return _matrix == rhs->_matrix;
 }
 
 std::string const           Grid::toString() const {
@@ -61,48 +109,43 @@ std::string const           Grid::toString() const {
         if (_matrix.at(i) < 10)
             str += " ";
     }
-
     return (str);
 }
 
-void Grid::calculateCost(Grid* finalGrid, int (*heuristic)(Grid*)){
-    _cost = _nbSteps + heuristic(finalGrid);
-}
-
-int Grid::getCost() const{
-    return _cost;
-}
-
-size_t  Grid::getSize() const{
-    return this->_size;
-}
+/*
+**              Private functions
+*/
 
 // Swaps emptyPos with the neighboring tile located at distance dst
-void Grid::swap(pos dst) {
+void            Grid::_swap(pos dst) {
     (*this)[_emptyPos] = (*this)[_emptyPos + dst];
     (*this)[_emptyPos + dst] = 0;
     _emptyPos = _emptyPos + dst;
     // TODO update cost
 }
 
-int& Grid::operator[](pos position){
-    if (position.x < 0 || position.x >= _size || position.y < 0 || position.y >= _size)
-        throw std::out_of_range("Trying to access an element out of the grid.");
-    return _matrix[position.y * this->_size + position.x];
-}
-
-bool    Grid::operator==(Grid* rhs) const{
-    return _matrix == rhs->_matrix;
-}
-
-Grid*   Grid::_child(pos dst)const{
+Grid*           Grid::_child(pos dst)const{
     Grid* child = new Grid(this);
     child->_history.push_back(this);
     child->_nbSteps += 1;
-    child->swap(dst);
+    child->_swap(dst);
     return child;
 }
 
-pos     operator+(const pos& lhs, const pos&rhs){
+Pos const       Grid::_searchEmptyPos() const {
+
+    struct Pos  emptyPos;
+
+    for (std::vector<int>::const_iterator it = _matrix.begin(); it != _matrix.end(); it++) {
+
+        if (*it == 0) {
+            emptyPos.x = (it - _matrix.begin()) % _size;
+            emptyPos.y = (it - _matrix.begin()) / _size;
+        }
+    }
+    return (emptyPos);
+}
+
+pos             operator+(const pos& lhs, const pos&rhs){
     return {lhs.x + rhs.x, lhs.y + rhs.y};
 }

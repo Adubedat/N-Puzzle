@@ -18,25 +18,28 @@ public:
     virtual ~Grid();
 
     std::vector<Grid*>              expand() const;
-    int                             getCost() const;
     void                            calculateCost(Grid*, int (*)(Grid*));
+    bool                            isSolvable() const;
+
+    int                             getCost() const;
     size_t                          getSize() const;
-    void                            swap(pos dst);
-    std::string const               toString() const;
 
     int&                            operator[](pos);
     bool                            operator==(Grid* rhs) const;
 
+    std::string const               toString() const;
+
 private:
     Grid() = default;
     Grid(const Grid*);
+
+    void                            _swap(pos dst);
     Grid*                           _child(pos dst)const ;
     Pos const                       _searchEmptyPos() const;
 
     size_t                          _size;
     std::vector<int>                _matrix;
     pos                             _emptyPos;
-    // ???                          _hash;
     std::vector<const Grid*>        _history;
     int                             _nbSteps;
     int                             _cost;
