@@ -23,6 +23,7 @@ public:
     size_t                          getSize() const;
     void                            swap(pos dst);
     std::string const               toString() const;
+    pos
 
     int&                            operator[](pos);
     bool                            operator==(Grid* rhs) const;
