@@ -1,8 +1,11 @@
 #ifndef GRID_HPP
 # define GRID_HPP
 
+#include "IHeuristic.hpp"
 #include <iostream>
 #include <vector>
+
+class IHeuristic;
 
 typedef struct  Pos{
     int x;
@@ -10,6 +13,7 @@ typedef struct  Pos{
 }               pos;
 
 pos     operator+(const pos&, const pos&);
+pos     operator-(const pos&, const pos&);
 
 class Grid {
 
@@ -18,15 +22,18 @@ public:
     virtual ~Grid();
 
     std::vector<Grid*>              expand() const;
-    void                            calculateCost(Grid*, int (*)(Grid*));
+    void                            addHeuristic(IHeuristic*);
     bool                            isSolvable() const;
 
-    int                             getCost() const;
+    int                             get_f_cost() const;
+    int                             get_g_cost() const;
+    int                             get_h_cost() const;
     size_t                          getSize() const;
     Pos const                       searchPos(int) const;
-    
+
+    const int&                      operator[](pos) const;
     int&                            operator[](pos);
-    bool                            operator==(Grid* rhs) const;
+    bool                            operator==(Grid& rhs) const;
 
     std::string const               toString() const;
 
@@ -35,15 +42,17 @@ private:
     Grid(const Grid*);
 
     void                            _swap(pos dst);
-    Grid*                           _child(pos dst)const ;
+    Grid*                           _makeChild(pos dst)const ;
 
-
+    IHeuristic*                     _heuristic;
     size_t                          _size;
     std::vector<int>                _matrix;
     pos                             _emptyPos;
     std::vector<const Grid*>        _history;
-    int                             _nbSteps;
-    int                             _cost;
+    int                             _f_cost;
+    int                             _g_cost;
+    int                             _h_cost;
+
 
 };
 

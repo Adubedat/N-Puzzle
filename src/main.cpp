@@ -1,5 +1,5 @@
 #include "GenerateGrid.hpp"
-#include "Heuristic.hpp"
+#include "Manhattan.hpp"
 #include "Solver.hpp"
 
 Grid*   getStartGrid(int const &argc, char** const &argv) {
@@ -22,10 +22,14 @@ Grid*   getStartGrid(int const &argc, char** const &argv) {
 
 int     main(int argc, char** argv){
 
-     Grid* start = getStartGrid(argc, argv);
+    Grid* start = getStartGrid(argc, argv);
+    Grid* final_grid = generateSolution(start->getSize());
+
+    IHeuristic* heuristic = new Manhattan(final_grid);
+    start->addHeuristic(heuristic);
 
      // Solver solver(start, &manhattanDistance);
-     Solver solver(start, &hammingDistance);
+    Solver solver(start, heuristic);
 
      solver.solve();
     // start->swap({1,0});

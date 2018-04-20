@@ -1,12 +1,11 @@
 #include "Solver.hpp"
 
 
-Solver::Solver(Grid* start, int (*heuristic)(Grid*, Grid*)):
+Solver::Solver(Grid* start, IHeuristic* heuristic):
 _heuristic(heuristic), _success(false) {
     _opened.push_back(start);
-    _finalGrid = _generateSolution(start->getSize());
+    _finalGrid = generateSolution(start->getSize());
     std::cout << start->toString() << std::endl;
-    std::cout << "cost: " << heuristic(start, _finalGrid) << std::endl;
 }
 
 Solver::~Solver(){
@@ -31,9 +30,27 @@ void Solver::explore() {
 }
 
 void Solver::solve() {
+    Grid* state;
+    std::vector<Grid*> children;
+
+    while (!_opened.empty() && !_success){
+        state = _opened.front();
+        if (*state == *_finalGrid)
+            _success = true;
+        else {
+            _opened.pop_front();
+            _closed.push_back(state);
+            children = state->expand();
+            // remove those already visited
+            for(Grid* child : children)
+                _opened.push_back(child);
+            // Finish algorithm
+        }
+        // if (_opened.size() >= 30)
+        //     _success = true;
+    }
+
     std::cout << _finalGrid->toString() << std::endl;
-
-
 
 }
 
@@ -52,33 +69,4 @@ bool    Solver::isFinal(Grid* grid) const{
 void    Solver::display() const{
     // Display solution
     // TODO
-}
-
-Grid*   Solver::_generateSolution(size_t size){
-    std::vector<int>    matrix(size * size, 0);
-    int                 len = matrix.size();
-    int                 x = 0;
-    int                 y = 0;
-    int                 i = 1;
-
-    while (i < len) {
-        while (x < size && matrix[x + y * size] == 0 && i != len) {
-            matrix[x++ + y * size] = i++;
-        }
-        x--;
-        y++;
-        while (y < size && matrix[x + y * size] == 0 && i != len)
-            matrix[x + y++ * size] = i++;
-        y--;
-        x--;
-        while (x >= 0 && matrix[x + y * size] == 0 && i != len)
-            matrix[x-- + y * size] = i++;
-        x++;
-        y--;
-        while (y >= 0 && matrix[x + y * size] == 0 && i != len)
-            matrix[x + y-- * size] = i++;
-        y++;
-        x++;
-    }
-    return (new Grid(size, matrix));
 }

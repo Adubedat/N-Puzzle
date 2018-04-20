@@ -85,6 +85,36 @@ void                    checkMatrixNumbers(std::vector<int> matrix, int const &s
     }
 }
 
+Grid*                    generateSolution(size_t size){
+    std::vector<int>    matrix(size * size, 0);
+    int                 len = matrix.size();
+    int                 x = 0;
+    int                 y = 0;
+    int                 i = 1;
+
+    while (i < len) {
+        while (x < size && matrix[x + y * size] == 0 && i != len) {
+            matrix[x++ + y * size] = i++;
+        }
+        x--;
+        y++;
+        while (y < size && matrix[x + y * size] == 0 && i != len)
+            matrix[x + y++ * size] = i++;
+        y--;
+        x--;
+        while (x >= 0 && matrix[x + y * size] == 0 && i != len)
+            matrix[x-- + y * size] = i++;
+        x++;
+        y--;
+        while (y >= 0 && matrix[x + y * size] == 0 && i != len)
+            matrix[x + y-- * size] = i++;
+        y++;
+        x++;
+    }
+    return (new Grid(size, matrix));
+}
+
+
 /*
 **                  Exception class
 */

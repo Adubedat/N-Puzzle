@@ -4,41 +4,43 @@ Grid::Grid(size_t size, std::vector<int> matrix):
     _size(size),
     _matrix(matrix) {
 
-    _nbSteps = 0;
+    _f_cost = -1;
+    _g_cost = 0;
+    _h_cost = -1;
     _emptyPos = searchPos(0);
-    _cost = -1;
-    // Calculate cost TODO
 }
 
 Grid::Grid(const Grid* src){
+    _heuristic = src->_heuristic;
     _size = src->_size;
     _matrix = src->_matrix;
     _emptyPos = src->_emptyPos;
     _history = src->_history;
-    _nbSteps = src->_nbSteps;
-    _cost = src->_cost;
+    _g_cost = src->_g_cost;
+    _h_cost = src->_h_cost;
 }
 
 Grid::~Grid(){
-    //TODO
 }
 
 std::vector<Grid*> Grid::expand() const{
     std::vector<Grid*> children;
 
     if (_emptyPos.x > 0)
-        children.push_back(_child({-1,0}));
+        children.push_back(_makeChild({-1,0}));
     if (_emptyPos.x < _size - 1)
-        children.push_back(_child({1,0}));
+        children.push_back(_makeChild({1,0}));
     if (_emptyPos.y > 0)
-        children.push_back(_child({0,-1}));
+        children.push_back(_makeChild({0,-1}));
     if (_emptyPos.y < _size - 1)
-        children.push_back(_child({0,1}));
+        children.push_back(_makeChild({0,1}));
     return children;
 }
 
-void            Grid::calculateCost(Grid* finalGrid, int (*heuristic)(Grid*)){
-    _cost = _nbSteps + heuristic(finalGrid);
+void            Grid::addHeuristic(IHeuristic* heuristic){
+    this->_heuristic = heuristic;
+    this->_h_cost = heuristic->calculateAll(this);
+    this->_f_cost = _g_cost + _h_cost;
 }
 
 /*
@@ -76,8 +78,15 @@ bool            Grid::isSolvable() const {
 **                  Getters and setters
 */
 
-int             Grid::getCost() const{
-    return _cost;
+int             Grid::get_f_cost() const {
+    return this->_g_cost + this->_h_cost;
+}
+
+int             Grid::get_g_cost() const {
+    return this->_g_cost;
+}
+int             Grid::get_h_cost() const {
+    return this->_h_cost;
 }
 
 size_t          Grid::getSize() const{
@@ -86,14 +95,20 @@ size_t          Grid::getSize() const{
 
 
 
-int&            Grid::operator[](pos position){
+const int&        Grid::operator[](pos position) const{
     if (position.x < 0 || position.x >= _size || position.y < 0 || position.y >= _size)
         throw std::out_of_range("Trying to access an element out of the grid.");
     return _matrix[position.y * this->_size + position.x];
 }
 
-bool    Grid::operator==(Grid* rhs) const{
-    return _matrix == rhs->_matrix;
+int&               Grid::operator[](pos position){
+    if (position.x < 0 || position.x >= _size || position.y < 0 || position.y >= _size)
+        throw std::out_of_range("Trying to access an element out of the grid.");
+    return _matrix[position.y * this->_size + position.x];
+}
+
+bool    Grid::operator==(Grid& rhs) const{
+    return _matrix == rhs._matrix;
 }
 
 std::string const           Grid::toString() const {
@@ -121,14 +136,15 @@ void            Grid::_swap(pos dst) {
     (*this)[_emptyPos] = (*this)[_emptyPos + dst];
     (*this)[_emptyPos + dst] = 0;
     _emptyPos = _emptyPos + dst;
-    // TODO update cost
 }
 
-Grid*           Grid::_child(pos dst)const{
+Grid*           Grid::_makeChild(pos dst)const{
     Grid* child = new Grid(this);
     child->_history.push_back(this);
-    child->_nbSteps += 1;
+    child->_g_cost += 1;
     child->_swap(dst);
+    child->_h_cost = _heuristic->update(child, child->_emptyPos - dst);
+    child->_f_cost = child->_g_cost + child->_h_cost;
     return child;
 }
 
@@ -148,4 +164,8 @@ Pos const       Grid::searchPos(int number) const {
 
 pos             operator+(const pos& lhs, const pos&rhs){
     return {lhs.x + rhs.x, lhs.y + rhs.y};
+}
+
+pos             operator-(const pos& lhs, const pos&rhs){
+    return {lhs.x - rhs.x, lhs.y - rhs.y};
 }
