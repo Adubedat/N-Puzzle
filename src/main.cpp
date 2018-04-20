@@ -24,7 +24,8 @@ int     main(int argc, char** argv){
 
      Grid* start = getStartGrid(argc, argv);
 
-     Solver solver(start, &manhattanDistance);
+     // Solver solver(start, &manhattanDistance);
+     Solver solver(start, &hammingDistance);
 
      solver.solve();
     // start->swap({1,0});

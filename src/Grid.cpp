@@ -5,7 +5,7 @@ Grid::Grid(size_t size, std::vector<int> matrix):
     _matrix(matrix) {
 
     _nbSteps = 0;
-    _emptyPos = _searchEmptyPos();
+    _emptyPos = searchPos(0);
     _cost = -1;
     // Calculate cost TODO
 }
@@ -132,13 +132,13 @@ Grid*           Grid::_child(pos dst)const{
     return child;
 }
 
-Pos const       Grid::_searchEmptyPos() const {
+Pos const       Grid::searchPos(int number) const {
 
     struct Pos  emptyPos;
 
     for (std::vector<int>::const_iterator it = _matrix.begin(); it != _matrix.end(); it++) {
 
-        if (*it == 0) {
+        if (*it == number) {
             emptyPos.x = (it - _matrix.begin()) % _size;
             emptyPos.y = (it - _matrix.begin()) / _size;
         }

@@ -5,6 +5,8 @@ Solver::Solver(Grid* start, int (*heuristic)(Grid*, Grid*)):
 _heuristic(heuristic), _success(false) {
     _opened.push_back(start);
     _finalGrid = _generateSolution(start->getSize());
+    std::cout << start->toString() << std::endl;
+    std::cout << "cost: " << heuristic(start, _finalGrid) << std::endl;
 }
 
 Solver::~Solver(){

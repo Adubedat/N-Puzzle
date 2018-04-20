@@ -38,7 +38,7 @@ DST = $(addprefix $(DST_PATH)/,$(NAME))
 
 all: $(DST)
 
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp $(INC)
 	mkdir -p $(OBJ_PATH)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 	printf "\e[32m[✔]\e[36m $@"

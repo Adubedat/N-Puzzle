@@ -9,7 +9,7 @@ typedef struct  Pos{
     int y;
 }               pos;
 
-pos   operator+(const pos&, const pos&);
+pos     operator+(const pos&, const pos&);
 
 class Grid {
 
@@ -23,7 +23,8 @@ public:
 
     int                             getCost() const;
     size_t                          getSize() const;
-
+    Pos const                       searchPos(int) const;
+    
     int&                            operator[](pos);
     bool                            operator==(Grid* rhs) const;
 
@@ -35,7 +36,7 @@ private:
 
     void                            _swap(pos dst);
     Grid*                           _child(pos dst)const ;
-    Pos const                       _searchEmptyPos() const;
+
 
     size_t                          _size;
     std::vector<int>                _matrix;
