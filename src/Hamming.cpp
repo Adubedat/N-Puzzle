@@ -18,5 +18,20 @@ int     Hamming::calculateAll(const Grid* const state) {
 }
 
 int     Hamming::update(const Grid* const state, const pos swapped) {
-    return (0);
+    int distance = state->get_h_cost();
+    int number;
+    pos old_pos;
+
+    number = (*state)[swapped];
+    old_pos = state->searchPos(0);
+
+    // If old_pos was missplaced, remove 1
+    if (*_goal)[old_pos] != number)
+        distance -= 1;
+
+    // If new_pos is missplaced, add 1
+    if (*_goal)[swapped] != number)
+        distance += 1;
+
+    return distance;
 }
