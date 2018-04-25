@@ -33,7 +33,7 @@ public:
 
     const int&                      operator[](pos) const;
     int&                            operator[](pos);
-    bool                            operator==(Grid& rhs) const;
+    bool                            operator==(const Grid& rhs) const;
 
     std::string const               toString() const;
 

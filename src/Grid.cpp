@@ -66,7 +66,7 @@ bool            Grid::isSolvable() const {
         onOddRowFromBottom = true;
     else
         onOddRowFromBottom = false;
-    if ((_size % 2 == 1 && inversions % 2 == 0)
+    if ((_size % 2 == 1 && inversions % 2 == 1)
         || ((_size % 2 == 0) && (onOddRowFromBottom == (inversions % 2 == 0))))
         return (true);
     else
@@ -107,7 +107,7 @@ int&               Grid::operator[](pos position){
     return _matrix[position.y * this->_size + position.x];
 }
 
-bool    Grid::operator==(Grid& rhs) const{
+bool    Grid::operator==(const Grid& rhs) const {
     return _matrix == rhs._matrix;
 }
 

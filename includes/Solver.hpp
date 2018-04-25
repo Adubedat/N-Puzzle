@@ -5,6 +5,8 @@
 #include "Grid.hpp"
 #include <deque>
 
+typedef std::deque<Grid*>::iterator     deque_it;
+
 class Solver {
 public:
     Solver(Grid* start, IHeuristic* heuristic);
@@ -15,7 +17,8 @@ public:
     bool        isFinal(Grid*) const;
     void        display() const;
 
-    static bool compareCosts(const Grid*, const Grid*);
+    void        insertSorted(Grid*, std::deque<Grid*> &);
+    deque_it    find(const Grid* node, std::deque<Grid*>& set);
 
 private:
     Solver() = default;

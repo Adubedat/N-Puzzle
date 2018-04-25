@@ -31,7 +31,11 @@ int     main(int argc, char** argv){
      // Solver solver(start, &manhattanDistance);
     Solver solver(start, heuristic);
 
-     solver.solve();
+    // if (! start->isSolvable()){
+    //     std::cout << "UUUUUNSOLVABLE BITCHES!!!" << std::endl;
+    // }
+    // else
+        solver.solve();
     // start->swap({1,0});
     // start->swap({0,1});
     // std::cout << start->toString() << std::endl;
