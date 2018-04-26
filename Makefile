@@ -21,6 +21,7 @@ SRC_NAME =	main.cpp \
 			Grid.cpp \
 			GenerateGrid.cpp \
 			Manhattan.cpp \
+			ManhattanLinearConflict.cpp \
 			Solver.cpp
 
 
@@ -30,6 +31,7 @@ INC_NAME = 	Grid.hpp \
 			GenerateGrid.hpp \
 			IHeuristic.hpp \
 			Manhattan.hpp \
+			ManhattanLinearConflict.hpp \
 			Solver.hpp
 
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
