@@ -23,13 +23,11 @@ Grid*   getStartGrid(int const &argc, char** const &argv) {
 int     main(int argc, char** argv){
 
     Grid* start = getStartGrid(argc, argv);
-    Grid* final_grid = generateSolution(start->getSize());
+    Grid* goal = generateSolution(start->getSize());
 
-    IHeuristic* heuristic = new Manhattan(final_grid);
-    start->addHeuristic(heuristic);
-
+    IHeuristic* heuristic = new Manhattan(goal);
      // Solver solver(start, &manhattanDistance);
-    Solver solver(start, heuristic);
+    Solver solver(start, goal, heuristic);
 
     // if (! start->isSolvable()){
     //     std::cout << "UUUUUNSOLVABLE BITCHES!!!" << std::endl;

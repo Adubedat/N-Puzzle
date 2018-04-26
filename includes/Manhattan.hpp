@@ -13,7 +13,7 @@ public:
     int calculateAll(const Grid* const state) const;
     int update(const Grid* const state, const pos swapped) const;
 
-private:
+protected:
     Manhattan();
     int     _manhattan_distance(pos state, pos goal) const;
 

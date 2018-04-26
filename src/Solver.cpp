@@ -1,10 +1,10 @@
 #include "Solver.hpp"
 
 
-Solver::Solver(Grid* start, IHeuristic* heuristic):
-_heuristic(heuristic), _success(false) {
+Solver::Solver(Grid* start, Grid* goal, IHeuristic* heuristic):
+_finalGrid(goal), _heuristic(heuristic) {
+    start->addHeuristic(heuristic);
     _opened.push_back(start);
-    _finalGrid = generateSolution(start->getSize());
 }
 
 Solver::~Solver(){

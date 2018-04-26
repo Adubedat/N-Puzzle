@@ -9,7 +9,7 @@ typedef std::deque<Grid*>::iterator     deque_it;
 
 class Solver {
 public:
-    Solver(Grid* start, IHeuristic* heuristic);
+    Solver(Grid* start, Grid* goal, IHeuristic* heuristic);
     virtual ~Solver();
 
     void        explore();
@@ -23,12 +23,10 @@ public:
 private:
     Solver() = default;
 
-
     IHeuristic*            _heuristic;
     Grid*                  _finalGrid;
     std::deque<Grid*>      _opened;
     std::deque<Grid*>      _closed;
-    bool                   _success;
 
 };
 #endif
