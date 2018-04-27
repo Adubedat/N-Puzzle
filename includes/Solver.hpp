@@ -1,19 +1,18 @@
 #ifndef SOLVER_HPP
 # define SOLVER_HPP
 
-#include "GenerateGrid.hpp"
 #include "Grid.hpp"
 #include <set>
 
 typedef std::set<Grid*>::iterator     set_it;
 
-struct compareGrid {
+struct compareHash {
     bool operator() (const Grid* lhs, const Grid* rhs) const {
-        if (lhs->getHash() == rhs->getHash())
-            return (false);
-        if (lhs->get_f_cost() == rhs->get_f_cost())
+        // if (lhs->getHash() == rhs->getHash())
+        //     return (false);
+        // if (lhs->get_f_cost() == rhs->get_f_cost())
             return (lhs->getHash() < rhs->getHash());
-        return ((lhs->get_f_cost() < rhs->get_f_cost()));
+        // return ((lhs->get_f_cost() < rhs->get_f_cost()));
     }
 };
 
@@ -34,8 +33,9 @@ private:
 
     IHeuristic*                     _heuristic;
     Grid*                           _finalGrid;
-    std::set<Grid*, compareGrid>    _opened;
-    std::set<Grid*, compareGrid>    _closed;
+    std::set<Grid*, compareHash>    _opened;
+    std::set<Grid*, compareHash>    _closed;
 
 };
+
 #endif

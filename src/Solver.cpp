@@ -1,5 +1,10 @@
 #include "Solver.hpp"
 
+struct compareCost {
+    bool operator() (const Grid* lhs, const Grid* rhs) const {
+        return (lhs->get_f_cost() < rhs->get_f_cost());
+    }
+} compare;
 
 Solver::Solver(Grid* start, Grid* goal, IHeuristic* heuristic):
 _finalGrid(goal), _heuristic(heuristic) {
@@ -19,7 +24,7 @@ void Solver::solve() {
     while (!_opened.empty()){
         //std::cout << "started looping" << std::endl;
         //pick element with the lowest cost (_opened is sorted)
-        state = *(_opened.begin());
+        state = *std::min_element(_opened.begin(), _opened.end(), compare);
         //check if this element is the solution
         if (*state == *_finalGrid){
             std::cout << "Yeeeeeaaah!!!!!!" << std::endl;
@@ -31,11 +36,11 @@ void Solver::solve() {
         }
         else {
             // move state from opened to closed list
-            _opened.erase(_opened.begin());
+            _opened.erase(state);
             _closed.insert(state);
 
-            //std::string line;
-            // std::getline(std::cin, line);
+            std::string line;
+            //std::getline(std::cin, line);
             // std::cout << "State :" << std::endl;
             // std::cout << state->toString() << std::endl;
             // std::cout << "g = " << state->get_g_cost() << " , h = " << state->get_h_cost() << ", f = " << state->get_f_cost() << std::endl;
@@ -70,8 +75,8 @@ void Solver::solve() {
                 }
                 //std::cout << "---------------------" << std::endl;
             }
-            // std::cout << "opened size : " << _opened.size() << std::endl;
-            // std::cout << "closed size : " << _closed.size() << std::endl;
+            //std::cout << "opened size : " << _opened.size() << std::endl;
+            //std::cout << "closed size : " << _closed.size() << std::endl;
         }
     }
 }
@@ -85,7 +90,7 @@ void Solver::solve() {
 //     }
 //     std::cout << "min grid : " << std::endl << min->toString() << std::endl;
 //     return (min);
-// }
+//}
 
 // void Solver::insertSorted(Grid* node, std::deque<Grid*> &set) {
 //     for (set_it it = set.begin(); it < set.end(); it++){
