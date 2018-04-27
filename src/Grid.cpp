@@ -2,7 +2,8 @@
 
 Grid::Grid(size_t size, std::vector<int> matrix):
     _size(size),
-    _matrix(matrix) {
+    _matrix(matrix),
+    _hash(_hashFunction(matrix)) {
 
     _f_cost = -1;
     _g_cost = 0;
@@ -18,6 +19,8 @@ Grid::Grid(const Grid* src){
     _history = src->_history;
     _g_cost = src->_g_cost;
     _h_cost = src->_h_cost;
+    _f_cost = src->_f_cost;
+    _hash = src->_hash;
 }
 
 Grid::~Grid(){
@@ -48,29 +51,33 @@ void            Grid::addHeuristic(IHeuristic* heuristic){
 **      If the grid width is even, and the blank is on an even row counting from the bottom (second-last, fourth-last etc), then the number of inversions in a solvable situation is odd.
 **      If the grid width is even, and the blank is on an odd row counting from the bottom (last, third-last, fifth-last etc) then the number of inversions in a solvable situation is even.
 */
-
-bool            Grid::isSolvable() const {
+int             Grid::_inversionNbr(const Grid* grid) const {
     int     inversions = 0;
-    int     len = _matrix.size();
+    int     len = (grid->_matrix).size();
     int     compared_value;
-    bool    onOddRowFromBottom;
 
     for (int i = 0; i < len; i++) {
-        compared_value = _matrix[i];
+        compared_value = grid->_matrix[i];
         for (int j = i + 1; j < len; j++) {
-            if (_matrix[j] < compared_value && _matrix[j] != 0)
+            if (grid->_matrix[j] < compared_value && grid->_matrix[j] != 0)
                 inversions++;
         }
     }
-    if ((_size - _emptyPos.y) % 2 == 1)
-        onOddRowFromBottom = true;
-    else
-        onOddRowFromBottom = false;
-    if ((_size % 2 == 1 && inversions % 2 == 1)
-        || ((_size % 2 == 0) && (onOddRowFromBottom == (inversions % 2 == 0))))
-        return (true);
-    else
-        return (false);
+    return (inversions);
+}
+
+bool            Grid::isSolvable(const Grid* goal) const {
+    int     startInversions = _inversionNbr(this);
+    int     goalInversions = _inversionNbr(goal);
+
+    std::cout << startInversions << std::endl;
+    std::cout << goalInversions << std::endl;
+
+    if (this->getSize() % 2 == 0) {
+        startInversions += (this->getSize() - this->_emptyPos.y) % 2;
+        goalInversions += (goal->getSize() - goal->_emptyPos.y) % 2;
+    }
+    return (startInversions % 2 == goalInversions % 2);
 }
 
 
@@ -78,8 +85,12 @@ bool            Grid::isSolvable() const {
 **                  Getters and setters
 */
 
+std::size_t     Grid::getHash() const {
+    return (_hash);
+}
+
 int             Grid::get_f_cost() const {
-    return this->_g_cost + this->_h_cost;
+    return this->_f_cost;
 }
 
 int             Grid::get_g_cost() const {
@@ -131,11 +142,22 @@ std::string const           Grid::toString() const {
 **              Private functions
 */
 
+// hashing vector function to identify grids faster
+std::size_t     Grid::_hashFunction(std::vector<int> const &matrix) const {
+  std::size_t seed = matrix.size();
+  for(auto &elem : matrix) {
+    seed ^= elem + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+  }
+  return seed;
+}
+
 // Swaps emptyPos with the neighboring tile located at distance dst
 void            Grid::_swap(pos dst) {
     (*this)[_emptyPos] = (*this)[_emptyPos + dst];
     (*this)[_emptyPos + dst] = 0;
     _emptyPos = _emptyPos + dst;
+    // update hash with new matrix
+    _hash = _hashFunction(this->_matrix);
 }
 
 Grid*           Grid::_makeChild(pos dst)const{

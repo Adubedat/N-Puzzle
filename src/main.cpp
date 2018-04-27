@@ -1,5 +1,5 @@
 #include "GenerateGrid.hpp"
-#include "Manhattan.hpp"
+#include "ManhattanLinearConflict.hpp"
 #include "Solver.hpp"
 
 Grid*   getStartGrid(int const &argc, char** const &argv) {
@@ -24,15 +24,16 @@ int     main(int argc, char** argv){
 
     Grid* start = getStartGrid(argc, argv);
     Grid* goal = generateSolution(start->getSize());
+    Grid* goal2 = generateSolution(start->getSize());
 
-    IHeuristic* heuristic = new Manhattan(goal);
+    IHeuristic* heuristic = new ManhattanLinearConflict(goal);
      // Solver solver(start, &manhattanDistance);
     Solver solver(start, goal, heuristic);
 
-    // if (! start->isSolvable()){
-    //     std::cout << "UUUUUNSOLVABLE BITCHES!!!" << std::endl;
-    // }
-    // else
+    if (! start->isSolvable(goal)){
+         std::cout << "UUUUUNSOLVABLE BITCHES!!!" << std::endl;
+    }
+    else
         solver.solve();
     // start->swap({1,0});
     // start->swap({0,1});
