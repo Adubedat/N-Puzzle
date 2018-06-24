@@ -20,6 +20,7 @@ LDLIBS =
 SRC_NAME =	main.cpp \
 			Grid.cpp \
 			GenerateGrid.cpp \
+			Hamming.cpp \
 			Manhattan.cpp \
 			ManhattanLinearConflict.cpp \
 			Solver.cpp
@@ -30,6 +31,7 @@ OBJ_NAME = $(SRC_NAME:.cpp=.o)
 INC_NAME = 	Grid.hpp \
 			GenerateGrid.hpp \
 			IHeuristic.hpp \
+			Hamming.hpp \
 			Manhattan.hpp \
 			ManhattanLinearConflict.hpp \
 			Solver.hpp
@@ -84,7 +86,7 @@ re: fclean all
 ac: all clean
 
 test: $(TEST)
-	@./$(TEST) puzzles/3solv10.npz
+	@./$(TEST) puzzles/jerry
 
 
 .PHONY: all clean fclean re

@@ -54,6 +54,10 @@ int ManhattanLinearConflict::calculateAll(const Grid* const state) const {
             }
         }
     }
+    // std::cout << "Calculated Manhattan + Linearconflicts for the following grid:" << std::endl;
+    // std::cout << state->toString() << std::endl;
+    // std::cout << "Manhattan distances: " << manhattanDistances << std::endl;
+    // std::cout << "Linear conflicts (x2): " << linearConflicts << std::endl;
     return manhattanDistances + 2 * linearConflicts;
 }
 
@@ -79,14 +83,22 @@ int ManhattanLinearConflict::update(const Grid* const state, const pos swapped) 
     state_pos = swapped;
     distance += Manhattan::_manhattan_distance(state_pos, goal_pos);
 
+    // std::cout << "Number " << number << " was at a manhattan dist of ";
+    // std::cout << _manhattan_distance(state->searchPos(0), goal_pos);
+    // std::cout << " now at " << _manhattan_distance(state_pos, goal_pos) << std::endl;
+
     // If swap was vertical, update linear conflicts in rows
     if ((state->searchPos(0) - swapped).x == 0) {
+        // std::cout << "- subtracting ";
         distance -= _findConflictsInRow(state->searchPos(0), goal_pos, state) * 2;
+        // std::cout << "+ adding ";
         distance += _findConflictsInRow(swapped, goal_pos, state) * 2;
     }
     // If swap was horizontal, update linear conflicts in columns
     else if ((state->searchPos(0) - swapped).y == 0) {
+        // std::cout << "- subtracting ";
         distance -= _findConflictsInColumn(state->searchPos(0), goal_pos, state) * 2;
+        // std::cout << "+ adding ";
         distance += _findConflictsInColumn(swapped, goal_pos, state) * 2;
     }
     else
@@ -113,6 +125,7 @@ int ManhattanLinearConflict::_findConflictsInRow(pos start_a, pos goal_a, const 
                     linearConflicts++;
         }
     }
+    // std::cout << linearConflicts << " conflicts in row " << start_a.y << std::endl;
     return linearConflicts;
 }
 
@@ -134,5 +147,6 @@ int ManhattanLinearConflict::_findConflictsInColumn(pos start_a, pos goal_a, con
                     linearConflicts++;
         }
     }
+    // std::cout << linearConflicts << " conflicts in column " << start_a.x << std::endl;
     return linearConflicts;
 }

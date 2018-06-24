@@ -30,7 +30,7 @@ void Solver::solve() {
         state = *std::min_element(_opened.begin(), _opened.end(), compare);
         this->_total_selected += 1;
         //check if this element is the solution
-        if (*state == *_finalGrid){
+        if (*state == *_finalGrid) {
             // std::cout << "Yeeeeeaaah!!!!!!" << std::endl;
             // std::cout << state->get_g_cost() << " steps!" << std::endl;
             // std::cout << "opened size : " << _opened.size() << std::endl;
@@ -44,13 +44,13 @@ void Solver::solve() {
             _opened.erase(state);
             _closed.insert(state);
 
-            std::string line;
-            std::getline(std::cin, line);
-            std::cout << "State :" << std::endl;
-            std::cout << state->toString() << std::endl;
-            std::cout << "g = " << state->get_g_cost() << " , h = " << state->get_h_cost() << ", f = " << state->get_f_cost() << std::endl;
-            std::cout << "hash =" << state->getHash() << std::endl;
-            std::cout << "---------------------" << std::endl;
+            // std::string line;
+            // std::getline(std::cin, line);
+            // std::cout << "State :" << std::endl;
+            // std::cout << state->toString() << std::endl;
+            // std::cout << "g = " << state->get_g_cost() << " , h = " << state->get_h_cost() << ", f = " << state->get_f_cost() << std::endl;
+            // std::cout << "hash =" << state->getHash() << std::endl;
+            // std::cout << "---------------------" << std::endl;
 
             // explore all neighboring states (up to 4 children)
             children = state->expand();
@@ -75,9 +75,9 @@ void Solver::solve() {
                 }
                 // if child state is not in the opened list, add it
                 else {
-                    std::cout << child->toString() << std::endl;
-                    std::cout << "g = " << child->get_g_cost() << " , h = " << child->get_h_cost() << ", f = " << child->get_f_cost() << std::endl;
-                    std::cout << std::endl;
+                    // std::cout << child->toString() << std::endl;
+                    // std::cout << "g = " << child->get_g_cost() << " , h = " << child->get_h_cost() << ", f = " << child->get_f_cost() << std::endl;
+                    // std::cout << std::endl;
                     _opened.insert(child);
                     this->_total_represented += 1;
                 }

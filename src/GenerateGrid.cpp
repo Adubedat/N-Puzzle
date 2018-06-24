@@ -114,6 +114,19 @@ Grid*                    generateSolution(size_t size){
     return (new Grid(size, matrix));
 }
 
+Grid*                   generateRegularSolution(size_t size) {
+    std::vector<int>    matrix(size * size, 0);
+    int                 len = matrix.size();
+    int                 num = 1;
+
+    for(int y = 0; y < size; y++) {
+        for(int x = 0; x < size; x++) {
+            matrix[x + y * size] = num;
+            num = (num + 1) % (size * size);
+        }
+    }
+    return new Grid(size, matrix);
+}
 
 /*
 **                  Exception class

@@ -21,6 +21,7 @@ class	SyntaxException : public std::exception
 Grid* const             GenerateRandomGrid(int const &size);
 Grid* const             GenerateGridFromFile(std::string const &src);
 Grid*                   generateSolution(size_t size);
+Grid*					generateRegularSolution(size_t size);
 Grid*                   parseFile(std::ifstream &ifs);
 void                    parseLine(std::string &line, std::vector<int> &v);
 int                     parseWord(std::string::iterator &it);
