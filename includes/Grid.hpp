@@ -45,9 +45,9 @@ private:
 
     std::size_t                     _hashFunction(std::vector<int> const &matrix) const;
     int                             _inversionNbr(const Grid* grid) const;
-    void                            _swap(pos dst);
-    Grid*                           _makeChild(pos dst)const ;
 
+    Grid*                           _makeChild(pos dst)const ;
+    void                            _swap(pos dst);
     IHeuristic*                     _heuristic;
     std::size_t                     _size;
     std::vector<int>                _matrix;

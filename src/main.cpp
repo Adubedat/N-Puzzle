@@ -26,7 +26,7 @@ int     main(int argc, char** argv){
     Grid* goal = generateSolution(start->getSize());
 
     IHeuristic* heuristic = new ManhattanLinearConflict(goal);
-     // Solver solver(start, &manhattanDistance);
+
     Solver solver(start, goal, heuristic);
 
     if (! start->isSolvable(goal)){

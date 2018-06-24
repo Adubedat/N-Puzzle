@@ -21,6 +21,8 @@ void Solver::solve() {
     std::vector<Grid*> children;
     set_it twin_it;
 
+    std::cout << "starting to solve mouahahahaha" << std::endl;
+
     while (!_opened.empty()){
         //std::cout << "started looping" << std::endl;
         //pick element with the lowest cost (_opened is sorted)
@@ -40,12 +42,12 @@ void Solver::solve() {
             _closed.insert(state);
 
             std::string line;
-            //std::getline(std::cin, line);
-            // std::cout << "State :" << std::endl;
-            // std::cout << state->toString() << std::endl;
-            // std::cout << "g = " << state->get_g_cost() << " , h = " << state->get_h_cost() << ", f = " << state->get_f_cost() << std::endl;
-            // std::cout << "hash =" << state->getHash() << std::endl;
-            // std::cout << "---------------------" << std::endl;
+            std::getline(std::cin, line);
+            std::cout << "State :" << std::endl;
+            std::cout << state->toString() << std::endl;
+            std::cout << "g = " << state->get_g_cost() << " , h = " << state->get_h_cost() << ", f = " << state->get_f_cost() << std::endl;
+            std::cout << "hash =" << state->getHash() << std::endl;
+            std::cout << "---------------------" << std::endl;
 
             // explore all neighboring states (up to 4 children)
             children = state->expand();
