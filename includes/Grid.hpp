@@ -40,7 +40,7 @@ public:
     std::vector<const Grid*>        getGenealogy() const;
     std::string const               toString() const;
 
-private:
+// private:
     Grid() = default;
     Grid(const Grid*);
 

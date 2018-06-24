@@ -3,7 +3,7 @@
 Hamming::Hamming(const Grid* const goal) :
     _goal(goal) {};
 
-int     Hamming::calculateAll(const Grid* const state) {
+int     Hamming::calculateAll(const Grid* const state) const {
     int distance = 0;
     pos position;
 
@@ -17,7 +17,7 @@ int     Hamming::calculateAll(const Grid* const state) {
     return (distance);
 }
 
-int     Hamming::update(const Grid* const state, const pos swapped) {
+int     Hamming::update(const Grid* const state, const pos swapped) const {
     int distance = state->get_h_cost();
     int number;
     pos old_pos;
@@ -26,11 +26,11 @@ int     Hamming::update(const Grid* const state, const pos swapped) {
     old_pos = state->searchPos(0);
 
     // If old_pos was missplaced, remove 1
-    if (*_goal)[old_pos] != number)
+    if ((*_goal)[old_pos] != number)
         distance -= 1;
 
     // If new_pos is missplaced, add 1
-    if (*_goal)[swapped] != number)
+    if ((*_goal)[swapped] != number)
         distance += 1;
 
     return distance;

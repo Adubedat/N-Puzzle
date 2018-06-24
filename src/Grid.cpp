@@ -168,7 +168,10 @@ Grid*           Grid::_makeChild(pos dst)const{
     child->_history.push_back(this);
     child->_g_cost += 1;
     child->_swap(dst);
-    child->_h_cost = _heuristic->update(child, child->_emptyPos - dst);
+
+    // child->_h_cost = _heuristic->update(child, child->_emptyPos - dst);
+    child->_h_cost = _heuristic->calculateAll(child);
+
     child->_f_cost = child->_g_cost + child->_h_cost;
     child->_parent = this;
     // std::cout << child->toString() << std::endl;

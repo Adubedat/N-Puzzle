@@ -27,20 +27,19 @@ int     main(int argc, char** argv){
     Grid* goal = generateRegularSolution(start->getSize());
 
     std::cout << start->toString() << std::endl << std::endl;
-    std::cout << goal->toString() << std::endl << std::endl;
+    // std::cout << goal->toString() << std::endl << std::endl;
 
-    IHeuristic* heuristic = new Hamming(goal);
+    IHeuristic* heuristic = new ManhattanLinearConflict(goal);
 
     Solver solver(start, goal, heuristic);
 
-
-    // if (! start->isSolvable(goal)){
-    //      std::cout << "This puzzle is unsolvable." << std::endl;
-    // }
-    // else{
+    if (! start->isSolvable(goal)){
+         std::cout << "This puzzle is unsolvable." << std::endl;
+    }
+    else{
         solver.solve();
         solver.display();
-    // }
+    }
     // start->swap({1,0});
     // start->swap({0,1});
     // std::cout << start->toString() << std::endl;
