@@ -33,9 +33,11 @@ private:
 
     IHeuristic*                     _heuristic;
     Grid*                           _finalGrid;
+    Grid*                           _result;
     std::set<Grid*, compareHash>    _opened;
     std::set<Grid*, compareHash>    _closed;
-
+    int                             _total_selected;
+    int                             _total_represented;
 };
 
 #endif

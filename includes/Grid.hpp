@@ -37,6 +37,7 @@ public:
     int&                            operator[](pos);
     bool                            operator==(const Grid& rhs) const;
 
+    std::vector<const Grid*>        getGenealogy() const;
     std::string const               toString() const;
 
 private:
@@ -45,9 +46,10 @@ private:
 
     std::size_t                     _hashFunction(std::vector<int> const &matrix) const;
     int                             _inversionNbr(const Grid* grid) const;
-
     Grid*                           _makeChild(pos dst)const ;
     void                            _swap(pos dst);
+
+    const Grid*                     _parent;
     IHeuristic*                     _heuristic;
     std::size_t                     _size;
     std::vector<int>                _matrix;

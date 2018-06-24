@@ -6,8 +6,9 @@ struct compareCost {
     }
 } compare;
 
-Solver::Solver(Grid* start, Grid* goal, IHeuristic* heuristic):
-_finalGrid(goal), _heuristic(heuristic) {
+Solver::Solver( Grid* start, Grid* goal, IHeuristic* heuristic):
+                _finalGrid(goal), _result(NULL), _heuristic(heuristic),
+                _total_selected(0), _total_represented(1) {
     start->addHeuristic(heuristic);
     _opened.insert(start);
 }
@@ -17,23 +18,25 @@ Solver::~Solver(){
 }
 
 void Solver::solve() {
-    Grid* state;
-    std::vector<Grid*> children;
-    set_it twin_it;
+    Grid*               state;
+    std::vector<Grid*>  children;
+    set_it              twin_it;
 
-    std::cout << "starting to solve mouahahahaha" << std::endl;
+    // std::cout << "starting to solve mouahahahaha" << std::endl;
 
     while (!_opened.empty()){
         //std::cout << "started looping" << std::endl;
         //pick element with the lowest cost (_opened is sorted)
         state = *std::min_element(_opened.begin(), _opened.end(), compare);
+        this->_total_selected += 1;
         //check if this element is the solution
         if (*state == *_finalGrid){
-            std::cout << "Yeeeeeaaah!!!!!!" << std::endl;
-            std::cout << state->get_g_cost() << " steps!" << std::endl;
-            std::cout << "opened size : " << _opened.size() << std::endl;
-            std::cout << "closed size : " << _closed.size() << std::endl;
-            std::cout << state->toString();
+            // std::cout << "Yeeeeeaaah!!!!!!" << std::endl;
+            // std::cout << state->get_g_cost() << " steps!" << std::endl;
+            // std::cout << "opened size : " << _opened.size() << std::endl;
+            // std::cout << "closed size : " << _closed.size() << std::endl;
+            // std::cout << state->toString() << std::endl;
+            this->_result = state;
             return;
         }
         else {
@@ -72,8 +75,11 @@ void Solver::solve() {
                 }
                 // if child state is not in the opened list, add it
                 else {
-                    //std::cout << "child not in opened, inserted" << std::endl;
+                    std::cout << child->toString() << std::endl;
+                    std::cout << "g = " << child->get_g_cost() << " , h = " << child->get_h_cost() << ", f = " << child->get_f_cost() << std::endl;
+                    std::cout << std::endl;
                     _opened.insert(child);
+                    this->_total_represented += 1;
                 }
                 //std::cout << "---------------------" << std::endl;
             }
@@ -117,6 +123,18 @@ bool    Solver::isFinal(Grid* grid) const {
 }
 
 void    Solver::display() const {
-    // Display solution
-    // TODO
+    std::cout << "============ SOLVING COMPLETE ===========" << std::endl << std::endl;
+    std::cout << "Total number of states ever selected (time complexity): ";
+    std::cout << this->_total_selected << std::endl;
+    std::cout << "Total number of states ever reprensented (size complexity): ";
+    std::cout << this->_total_represented << std::endl;
+    std::cout << "Number of moves: " << this->_result->get_g_cost() << std::endl;
+
+    std::cout << std::endl << "Here are all the moves: (Press enter to view the next) " << std::endl;
+    std::vector<const Grid*> genealogy = this->_result->getGenealogy();
+    for(std::vector<const Grid*>::iterator it = genealogy.begin(); it != genealogy.end(); it++){
+        std::cin.get();
+        std::cout << (*it)->toString() << std::endl;
+    }
+    std::cout << std::endl << "FINISHED!" << std::endl;
 }

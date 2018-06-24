@@ -1,7 +1,6 @@
 #include "GenerateGrid.hpp"
 #include "ManhattanLinearConflict.hpp"
 #include "Solver.hpp"
-//lol
 
 Grid*   getStartGrid(int const &argc, char** const &argv) {
 
@@ -28,13 +27,16 @@ int     main(int argc, char** argv){
 
     IHeuristic* heuristic = new ManhattanLinearConflict(goal);
 
-    Solver solver(start, goal, heuristic);
 
-    if (! start->isSolvable(goal)){
-         std::cout << "UUUUUNSOLVABLE BITCHES!!!" << std::endl;
-    }
-    else
-        solver.solve();
+    Solver solver(start, goal, heuristic);
+    std::cout << "h cost: "<< start->get_h_cost();
+    
+    // if (! start->isSolvable(goal)){
+    //      std::cout << "UUUUUNSOLVABLE BITCHES!!!" << std::endl;
+    // }
+    // else
+    //
+    //     solver.solve();
     // start->swap({1,0});
     // start->swap({0,1});
     // std::cout << start->toString() << std::endl;

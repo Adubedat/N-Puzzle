@@ -1,6 +1,7 @@
 #include "Grid.hpp"
 
 Grid::Grid(size_t size, std::vector<int> matrix):
+    _parent(NULL),
     _size(size),
     _matrix(matrix),
     _hash(_hashFunction(matrix)) {
@@ -9,6 +10,7 @@ Grid::Grid(size_t size, std::vector<int> matrix):
     _g_cost = 0;
     _h_cost = -1;
     _emptyPos = searchPos(0);
+    _parent = NULL;
 }
 
 Grid::Grid(const Grid* src){
@@ -21,6 +23,7 @@ Grid::Grid(const Grid* src){
     _h_cost = src->_h_cost;
     _f_cost = src->_f_cost;
     _hash = src->_hash;
+    _parent = src;
 }
 
 Grid::~Grid(){
@@ -70,8 +73,8 @@ bool            Grid::isSolvable(const Grid* goal) const {
     int     startInversions = _inversionNbr(this);
     int     goalInversions = _inversionNbr(goal);
 
-    std::cout << startInversions << std::endl;
-    std::cout << goalInversions << std::endl;
+    // std::cout << startInversions << std::endl;
+    // std::cout << goalInversions << std::endl;
 
     if (this->getSize() % 2 == 0) {
         startInversions += (this->getSize() - this->_emptyPos.y) % 2;
@@ -167,8 +170,24 @@ Grid*           Grid::_makeChild(pos dst)const{
     child->_swap(dst);
     child->_h_cost = _heuristic->update(child, child->_emptyPos - dst);
     child->_f_cost = child->_g_cost + child->_h_cost;
+    child->_parent = this;
+    // std::cout << child->toString() << std::endl;
+    // std::cout << "g = " << child->get_g_cost() << " , h = " << child->get_h_cost() << ", f = " << child->get_f_cost() << std::endl;
+    // std::cout << std::endl;
     return child;
 }
+
+std::vector<const Grid*>    Grid::getGenealogy() const{
+    std::vector<const Grid*> genealogy;
+    const Grid* current = this;
+
+    while(current != NULL){
+        genealogy.insert(genealogy.begin(), current);
+        current = current->_parent;
+    }
+    return genealogy;
+}
+
 
 Pos const       Grid::searchPos(int number) const {
 

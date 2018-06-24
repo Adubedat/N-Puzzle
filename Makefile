@@ -84,7 +84,7 @@ re: fclean all
 ac: all clean
 
 test: $(TEST)
-	@./$(TEST) puzzles/test
+	@./$(TEST) puzzles/3solv10.npz
 
 
 .PHONY: all clean fclean re

@@ -30,16 +30,10 @@ int     main(int argc, char** argv){
     Solver solver(start, goal, heuristic);
 
     if (! start->isSolvable(goal)){
-         std::cout << "UUUUUNSOLVABLE BITCHES!!!" << std::endl;
+         std::cout << "This puzzle is unsolvable." << std::endl;
     }
-    else
+    else {
         solver.solve();
-    // start->swap({1,0});
-    // start->swap({0,1});
-    // std::cout << start->toString() << std::endl;
-    // std::cout << std::endl;
-
-    // std::vector<Grid*> children = start->expand();
-    // for (std::vector<Grid*>::iterator i = children.begin(); i != children.end(); i++)
-        // std::cout << (*i)->toString() << std::endl << std::endl;
+        solver.display();
+    }
 }
