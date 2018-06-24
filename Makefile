@@ -38,6 +38,7 @@ SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 INC = $(addprefix $(INC_PATH)/,$(INC_NAME))
 DST = $(addprefix $(DST_PATH)/,$(NAME))
+TEST = $(addprefix $(DST),_TEST)
 
 all: $(DST)
 
@@ -49,6 +50,13 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp $(INC)
 
 $(DST): $(OBJ) $(INC)
 	$(CC) $(OBJ) $(LDFLAGS) $(LDLIBS) -o $(DST)
+	printf "\e[32m----------------------------------\e[36m\n"
+	printf "\e[32m[✔]\e[36m $@"
+	printf "\n\e[32m----------------------------------\e[36m"
+	printf "\033[0m\n"
+
+$(TEST): $(filter-out $(OBJ_PATH)/main.o, $(OBJ)) $(OBJ_PATH)/test.o $(INC)
+	$(CC) $(filter-out $(OBJ_PATH)/main.o, $(OBJ)) $(OBJ_PATH)/test.o $(LDFLAGS) $(LDLIBS) -o $(TEST)
 	printf "\e[32m----------------------------------\e[36m\n"
 	printf "\e[32m[✔]\e[36m $@"
 	printf "\n\e[32m----------------------------------\e[36m"
@@ -75,8 +83,8 @@ re: fclean all
 
 ac: all clean
 
-test: all
-	@./$(NAME) puzzles/test
+test: $(TEST)
+	@./$(TEST) puzzles/test
 
 
 .PHONY: all clean fclean re
