@@ -20,11 +20,14 @@ Grid*   getStartGrid(int const &argc, char** const &argv) {
     return (NULL);
 }
 
+
 int     main(int argc, char** argv){
 
     Grid* start = getStartGrid(argc, argv);
-    Grid* goal = generateSolution(start->getSize());
+    std::cout << "Received the following n puzzle: " << std::endl;
+    std::cout << start->toString() << std::endl;
 
+    Grid* goal = generateSolution(start->getSize());
     IHeuristic* heuristic = new ManhattanLinearConflict(goal);
 
     Solver solver(start, goal, heuristic);
@@ -35,5 +38,6 @@ int     main(int argc, char** argv){
     else {
         solver.solve();
         solver.display();
+        solver.destroy();
     }
 }

@@ -2,6 +2,7 @@
 #include "ManhattanLinearConflict.hpp"
 #include "Hamming.hpp"
 #include "Solver.hpp"
+#include <ctime>
 
 Grid*   getStartGrid(int const &argc, char** const &argv) {
 
@@ -30,6 +31,15 @@ int     main(int argc, char** argv){
     // std::cout << goal->toString() << std::endl << std::endl;
 
     IHeuristic* heuristic = new ManhattanLinearConflict(goal);
+    // IHeuristic* heuristic = new Manhattan(goal);
+
+    // const clock_t begin_time = clock();
+    // heuristic->calculateAll(start);
+    // std::cout << "calculateAll " << (clock() - begin_time) << std::endl;
+    //
+    // const clock_t medium_time = clock();
+    // heuristic->update(start, {1,2});
+    // std::cout << "update " << (clock() - medium_time) << std::endl;
 
     Solver solver(start, goal, heuristic);
 

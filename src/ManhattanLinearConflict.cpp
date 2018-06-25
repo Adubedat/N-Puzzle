@@ -84,7 +84,7 @@ int ManhattanLinearConflict::update(const Grid* const state, const pos swapped) 
     distance += Manhattan::_manhattan_distance(state_pos, goal_pos);
 
     // std::cout << "Number " << number << " was at a manhattan dist of ";
-    // std::cout << _manhattan_distance(state->searchPos(0), goal_pos);
+    std::cout << _manhattan_distance(state->searchPos(0), goal_pos);
     // std::cout << " now at " << _manhattan_distance(state_pos, goal_pos) << std::endl;
 
     // If swap was vertical, update linear conflicts in rows
@@ -119,10 +119,14 @@ int ManhattanLinearConflict::_findConflictsInRow(pos start_a, pos goal_a, const 
             tile_b = (*state)[start_b];
             goal_b = _goal->searchPos(tile_b);
             if (goal_b.y == goal_a.y)
-                if (start_b.x > start_a.x && goal_b.x < goal_a.x)
+                if (start_b.x > start_a.x && goal_b.x < goal_a.x){
                     linearConflicts++;
-                if (start_b.x < start_a.x && goal_b.x > goal_b.x)
+                    // std::cout << "(number " << tile_b << ")";
+                }
+                if (start_b.x < start_a.x && goal_b.x > goal_a.x){
                     linearConflicts++;
+                    // std::cout << "(number " << tile_b << ")";
+                }
         }
     }
     // std::cout << linearConflicts << " conflicts in row " << start_a.y << std::endl;
@@ -143,7 +147,7 @@ int ManhattanLinearConflict::_findConflictsInColumn(pos start_a, pos goal_a, con
             if (goal_b.x == goal_a.x)
                 if (start_b.y > start_a.y && goal_b.y < goal_a.y)
                     linearConflicts++;
-                if (start_b.y < start_a.y && goal_b.y > goal_b.y)
+                if (start_b.y < start_a.y && goal_b.y > goal_a.y)
                     linearConflicts++;
         }
     }
