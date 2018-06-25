@@ -23,7 +23,8 @@ SRC_NAME =	main.cpp \
 			Hamming.cpp \
 			Manhattan.cpp \
 			ManhattanLinearConflict.cpp \
-			Solver.cpp
+			Solver.cpp \
+			Options.cpp
 
 
 OBJ_NAME = $(SRC_NAME:.cpp=.o)
@@ -34,7 +35,8 @@ INC_NAME = 	Grid.hpp \
 			Hamming.hpp \
 			Manhattan.hpp \
 			ManhattanLinearConflict.hpp \
-			Solver.hpp
+			Solver.hpp \
+			Options.hpp
 
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
