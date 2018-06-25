@@ -27,8 +27,11 @@ int     main(int argc, char** argv){
     std::cout << "Received the following n puzzle: " << std::endl;
     std::cout << start->toString() << std::endl;
 
+    // Change This
+    t_Strategy strategy = NONE;
+
     Grid* goal = generateSolution(start->getSize());
-    IHeuristic* heuristic = new ManhattanLinearConflict(goal);
+    IHeuristic* heuristic = new ManhattanLinearConflict(goal, strategy);
 
     Solver solver(start, goal, heuristic);
 
@@ -38,6 +41,6 @@ int     main(int argc, char** argv){
     else {
         solver.solve();
         solver.display();
-        solver.destroy();
+        // solver.destroy();
     }
 }

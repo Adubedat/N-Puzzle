@@ -4,16 +4,20 @@
 # include "IHeuristic.hpp"
 
 class Hamming : public IHeuristic {
+
 public:
-    Hamming(const Grid* const goal);
-    int calculateAll(const Grid* const state) const;
-    int update(const Grid* const state, const pos swapped) const;
+    Hamming(const Grid* const goal, t_Strategy strategy);
     virtual ~Hamming() = default;
+
+    int         calculateAll(const Grid* const state) const;
+    int         update(const Grid* const state, const pos swapped) const;
+    t_Strategy  get_strategy() const;
 
 private:
     Hamming() = default;
 
     const Grid* const   _goal;
+    t_Strategy          _strategy;
 };
 
 #endif

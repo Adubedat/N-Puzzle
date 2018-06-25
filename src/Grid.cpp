@@ -93,7 +93,11 @@ std::size_t     Grid::getHash() const {
 }
 
 int             Grid::get_f_cost() const {
-    return this->_f_cost;
+    switch(this->_heuristic->get_strategy()){
+        case NONE:      return this->_f_cost;
+        case UC:        return this->_g_cost;
+        case GREEDY:    return this->_h_cost;
+    }
 }
 
 int             Grid::get_g_cost() const {
