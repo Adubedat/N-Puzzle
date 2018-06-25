@@ -15,6 +15,7 @@ void Solver::solve() {
     Grid*               state;
     std::vector<Grid*>  children;
     set_it              twin_it;
+    int                 depth = 0;
 
     while (!_opened.empty()){
         //pick element with the lowest cost (_opened is sorted)
@@ -24,6 +25,13 @@ void Solver::solve() {
             continue ;
         }
         this->_total_selected += 1;
+
+        // Output
+        if (state->get_g_cost() > depth){
+            depth = state->get_g_cost();
+            std::cout << "Depth: " << depth << std::endl;
+        }
+
         //check if this element is the solution
         if (*state == *_finalGrid) {
             this->_result = state;

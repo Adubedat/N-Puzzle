@@ -3,8 +3,8 @@
 ManhattanLinearConflict::ManhattanLinearConflict() {
 }
 
-ManhattanLinearConflict::ManhattanLinearConflict(const Grid* const goal) :
-Manhattan(goal) {
+ManhattanLinearConflict::ManhattanLinearConflict(const Grid* const goal, t_Strategy strategy) :
+Manhattan(goal, strategy) {
 }
 
 int ManhattanLinearConflict::calculateAll(const Grid* const state) const {
