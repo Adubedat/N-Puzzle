@@ -3,6 +3,15 @@
 #include "Hamming.hpp"
 #include "ManhattanLinearConflict.hpp"
 
+static void         usageMessage( void ) {
+    std::cout << "Usage:\n./n-puzzle [-size n] [file] [-heuristic mlc|man|ham] [-greedy] [-ucost]\n\
+mlc : Manhattan distance with linear conflict gestion\n\
+man : Manhattan distance\n\
+ham : Hamming\n\
+-greedy : Only use heuristic function to find the fastest path\n\
+-ucost : Ignore heuristic and explore all the possible paths" << std::endl;
+}
+
 static e_heuristic  checkHeuristic(char* const &str) {
     if (strcmp(str, "mlc") == 0)
         return mlc;
@@ -11,7 +20,7 @@ static e_heuristic  checkHeuristic(char* const &str) {
     else if (strcmp(str, "ham") == 0)
         return ham;
     else
-        throw SyntaxException("Error: Admissible heuristics are mlc(ManhattanLinearConflict), man(Manhattan distance) and ham(Hamming distance)");
+        throw OptionException("Error: Unadmissible heuristic");
 }
 
 Solver*             parseOptions(int const &argc, char** const &argv) {
@@ -23,7 +32,7 @@ Solver*             parseOptions(int const &argc, char** const &argv) {
 
     try {
         if (argc < 2)
-            throw SyntaxException("Parameters are missing\nExpected format : ./n-puzzle [-size n] [file] [-heuristic mlc|man|ham]");
+            throw OptionException("Error: Parameters are missing");
         for (int i = 1; i < argc; i++) {
             if (strcmp(argv[i], "-heuristic") == 0 && (i + 1 < argc))
                 heuristic = checkHeuristic(argv[++i]);
@@ -37,11 +46,11 @@ Solver*             parseOptions(int const &argc, char** const &argv) {
                 start = GenerateGridFromFile(argv[i]);
         }
         if (start == NULL)
-            throw SyntaxException("Start grid is missing\nExpected format : ./n-puzzle [-size n] [file] [-heuristic mlc|man|ham]");
+            throw OptionException("Error: Start grid is missing");
         std::cout << "Input grid:" << std::endl << start->toString() << std::endl << std::endl;
         goal = generateSolution(start->getSize());
         if (! start->isSolvable(goal))
-            throw SyntaxException("This puzzle is unsolvable.");
+            throw SyntaxException("Error: This puzzle is unsolvable.");
         if (heuristic == mlc)
             iheuristic = new ManhattanLinearConflict(goal, strategy);
         else if (heuristic == man)
@@ -50,8 +59,24 @@ Solver*             parseOptions(int const &argc, char** const &argv) {
             iheuristic = new Hamming(goal, strategy);
         return (new Solver(start, goal, iheuristic));
 
+    } catch (OptionException &e) {
+        std::cout << e.what() << std::endl << std::endl;
+        usageMessage();
+        std::exit(EXIT_FAILURE);
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
         std::exit(EXIT_FAILURE);
     }
+}
+
+/*
+**                  Exception class
+*/
+
+OptionException::OptionException(std::string msg) :
+	_msg(msg)
+{}
+
+const char*		OptionException::what(void) const throw() {
+	return (_msg.c_str());
 }

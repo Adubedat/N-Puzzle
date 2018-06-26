@@ -5,7 +5,7 @@ Grid* const             GenerateRandomGrid(int const &size) {
     unsigned    seed = std::chrono::system_clock::now().time_since_epoch().count();
 
     if (size < 1)
-        throw SyntaxException("size must be higher than zero");
+        throw SyntaxException("Error: size must be higher than zero");
     for (int i = 0; i < size * size; i++) {
         matrix[i] = i;
     }

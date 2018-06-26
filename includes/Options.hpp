@@ -10,6 +10,15 @@ enum e_heuristic {
     ham
 };
 
+class	OptionException : public std::exception
+{
+	public:
+		OptionException(std::string msg);
+		virtual const char* what(void) const throw();
+	private:
+		std::string	_msg;
+};
+
 Grid*   getStartGrid(int const &argc, char** const &argv);
 Solver* parseOptions(int const &argc, char** const &argv);
 
