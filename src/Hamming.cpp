@@ -1,6 +1,6 @@
 #include "Hamming.hpp"
 
-Hamming::Hamming(const Grid* const goal, t_Strategy strategy) :
+Hamming::Hamming(const Grid* const goal, e_strategy strategy) :
     _goal(goal), _strategy(strategy) {};
 
 int     Hamming::calculateAll(const Grid* const state) const {
@@ -35,6 +35,6 @@ int     Hamming::update(const Grid* const state, const pos swapped) const {
 
     return distance;
 }
-t_Strategy  Hamming::get_strategy() const {
+e_strategy  Hamming::get_strategy() const {
     return this->_strategy;
 }

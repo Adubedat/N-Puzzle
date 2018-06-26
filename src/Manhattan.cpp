@@ -3,7 +3,7 @@
 Manhattan::Manhattan(): _goal(nullptr) {
 }
 
-Manhattan::Manhattan(const Grid* const goal, t_Strategy strategy) :
+Manhattan::Manhattan(const Grid* const goal, e_strategy strategy) :
     _goal(goal), _strategy(strategy) {}
 
 int Manhattan::calculateAll(const Grid* const state) const {
@@ -57,6 +57,6 @@ int Manhattan::_manhattan_distance(pos state, pos goal) const {
     return distance;
 }
 
-t_Strategy  Manhattan::get_strategy() const {
+e_strategy  Manhattan::get_strategy() const {
     return this->_strategy;
 }

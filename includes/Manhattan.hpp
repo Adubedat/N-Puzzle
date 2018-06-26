@@ -8,19 +8,19 @@
 
 class Manhattan: public IHeuristic {
 public:
-    Manhattan(const Grid* const goal, t_Strategy strategy);
+    Manhattan(const Grid* const goal, e_strategy strategy);
     ~Manhattan();
 
     int         calculateAll(const Grid* const state) const;
     int         update(const Grid* const state, const pos swapped) const;
-    t_Strategy  get_strategy() const;
-    
+    e_strategy  get_strategy() const;
+
 protected:
     Manhattan();
     int     _manhattan_distance(pos state, pos goal) const;
 
     const Grid * const  _goal;
-    t_Strategy          _strategy;
+    e_strategy          _strategy;
 };
 
 #endif

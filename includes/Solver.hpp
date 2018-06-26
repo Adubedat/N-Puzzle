@@ -29,9 +29,6 @@ public:
 
 private:
     Solver() = default;
-    // Grid*       getNextGridToExplore() const;
-    // void        insertSorted(Grid*, std::deque<Grid*> &);
-    // set_it      find(const Grid* node, std::deque<Grid*>& set);
 
     IHeuristic*                         _heuristic;
     Grid*                               _finalGrid;
