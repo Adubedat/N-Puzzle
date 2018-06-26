@@ -9,6 +9,7 @@ Solver::Solver( Grid* start, Grid* goal, IHeuristic* heuristic):
 
 Solver::~Solver(){
     delete _heuristic;
+    delete _result;
 
     typedef std::multiset<Grid*, compareCost>::iterator multiset_it;
     for(multiset_it it = _opened.begin(); it != _opened.end(); it++)
@@ -27,29 +28,36 @@ void Solver::solve() {
     set_it              twin_it;
     int                 depth = 0;
 
+    std::cout << "=========== Solving ============" << std::endl << std::endl;
+    std::cout << "Currently searching at depth:" << std::endl;
     while (!_opened.empty()){
-        //pick element with the lowest cost (_opened is sorted)
+        // Pop from open list the element with the lowest cost (_opened is sorted)
         state = *_opened.begin();
+        _opened.erase(_opened.begin());
+
+        // If element is already in closed list, delete it
         if (_closed.find(state) != _closed.end()) {
-            _opened.erase(_opened.begin());
+            delete state;
             continue ;
         }
         this->_total_selected += 1;
 
-        // Output
+        // Output visualization of search depth
         if (state->get_g_cost() > depth){
             depth = state->get_g_cost();
-            std::cout << "Depth: " << depth << std::endl;
+            std::cout << "|" << std::flush;
+            if(depth % 10 == 0)
+                std::cout << "  " << depth << std::endl;
         }
 
         //check if this element is the solution
         if (*state == *_finalGrid) {
             this->_result = state;
+            std::cout << std::endl;
             return;
         }
         else {
             _closed.insert(state);
-            // move state from opened to closed list
 
             // explore all neighboring states (up to 4 children)
             children = state->expand();

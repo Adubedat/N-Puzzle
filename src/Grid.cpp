@@ -18,7 +18,6 @@ Grid::Grid(const Grid* src){
     _size = src->_size;
     _matrix = src->_matrix;
     _emptyPos = src->_emptyPos;
-    _history = src->_history;
     _g_cost = src->_g_cost;
     _h_cost = src->_h_cost;
     _f_cost = src->_f_cost;
@@ -28,7 +27,6 @@ Grid::Grid(const Grid* src){
 
 Grid::~Grid(){
     _matrix.clear();
-    _history.clear();
 }
 
 std::vector<Grid*> Grid::expand() const{
@@ -171,7 +169,6 @@ void            Grid::_swap(pos dst) {
 
 Grid*           Grid::_makeChild(pos dst)const{
     Grid* child = new Grid(this);
-    child->_history.push_back(this);
     child->_g_cost += 1;
     child->_swap(dst);
 

@@ -54,7 +54,6 @@ private:
     std::size_t                     _size;
     std::vector<int>                _matrix;
     pos                             _emptyPos;
-    std::vector<const Grid*>        _history;
     int                             _f_cost;
     int                             _g_cost;
     int                             _h_cost;

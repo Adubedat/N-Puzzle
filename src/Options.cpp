@@ -17,6 +17,7 @@ static e_heuristic  checkHeuristic(char* const &str) {
 Solver*             parseOptions(int const &argc, char** const &argv) {
     Grid*       start = NULL;
     e_heuristic heuristic = mlc;
+    e_strategy  strategy = NONE;
     IHeuristic* iheuristic = NULL;
     Grid*       goal = NULL;
 
@@ -28,20 +29,25 @@ Solver*             parseOptions(int const &argc, char** const &argv) {
                 heuristic = checkHeuristic(argv[++i]);
             else if (strcmp(argv[i], "-size") == 0 && (i + 1 < argc))
                 start = GenerateRandomGrid(std::stoi(argv[++i]));
+            else if (strcmp(argv[i], "-greedy") == 0)
+                strategy = GREEDY;
+            else if (strcmp(argv[i], "-ucost") == 0)
+                strategy = UC;
             else
                 start = GenerateGridFromFile(argv[i]);
         }
         if (start == NULL)
             throw SyntaxException("Start grid is missing\nExpected format : ./n-puzzle [-size n] [file] [-heuristic mlc|man|ham]");
+        std::cout << "Input grid:" << std::endl << start->toString() << std::endl << std::endl;
         goal = generateSolution(start->getSize());
         if (! start->isSolvable(goal))
             throw SyntaxException("This puzzle is unsolvable.");
         if (heuristic == mlc)
-            iheuristic = new ManhattanLinearConflict(goal);
+            iheuristic = new ManhattanLinearConflict(goal, strategy);
         else if (heuristic == man)
-            iheuristic = new Manhattan(goal);
+            iheuristic = new Manhattan(goal, strategy);
         else
-            iheuristic = new Hamming(goal);
+            iheuristic = new Hamming(goal, strategy);
         return (new Solver(start, goal, iheuristic));
 
     } catch (std::exception &e) {

@@ -6,7 +6,7 @@
 class ManhattanLinearConflict: public Manhattan {
 public:
     ManhattanLinearConflict(const Grid* const goal, e_strategy strategy);
-    ~ManhattanLinearConflict();
+    ~ManhattanLinearConflict() = default;
     int calculateAll(const Grid* const state) const;
     int update(const Grid* const state, const pos swapped) const;
 
