@@ -25,7 +25,7 @@ Grid*   getStartGrid(int const &argc, char** const &argv) {
 int     main(int argc, char** argv){
 
     Grid* start = getStartGrid(argc, argv);
-    Grid* goal = generateRegularSolution(start->getSize());
+    Grid* goal = generateSolution(start->getSize());
 
     std::cout << start->toString() << std::endl << std::endl;
     // std::cout << goal->toString() << std::endl << std::endl;
