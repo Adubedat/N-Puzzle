@@ -1,4 +1,5 @@
 #include "GenerateGrid.hpp"
+#include "Options.hpp"
 
 Grid*               GenerateRandomGrid(int const &size) {
     std::vector<int>  matrix(size * size);
@@ -20,7 +21,7 @@ Grid*            GenerateGridFromFile(std::string const &src) {
     if (myFile.is_open())
         grid = parseFile(myFile);
     else
-        throw SyntaxException("Error : This file can not be opened");
+        throw OptionException("Error : This file can not be opened");
     return (grid);
 }
 

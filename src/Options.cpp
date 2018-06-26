@@ -5,11 +5,11 @@
 
 static void         usageMessage( void ) {
     std::cout << "Usage:\n./n-puzzle [-size n] [file] [-heuristic mlc|man|ham] [-greedy] [-ucost]\n\
-mlc : Manhattan distance with linear conflict gestion\n\
-man : Manhattan distance\n\
-ham : Hamming\n\
--greedy : Only use heuristic function to find the fastest path\n\
--ucost : Ignore heuristic and explore all the possible paths" << std::endl;
+\tmlc : Manhattan distance with linear conflict gestion\n\
+\tman : Manhattan distance\n\
+\tham : Hamming\n\
+\t-greedy : Only use heuristic function to find the fastest path\n\
+\t-ucost : Ignore heuristic and explore all the possible paths" << std::endl;
 }
 
 static e_heuristic  checkHeuristic(char* const &str) {
