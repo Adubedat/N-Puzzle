@@ -8,7 +8,17 @@ Solver::Solver( Grid* start, Grid* goal, IHeuristic* heuristic):
 }
 
 Solver::~Solver(){
-    // TODO
+    delete _heuristic;
+
+    typedef std::multiset<Grid*, compareCost>::iterator multiset_it;
+    for(multiset_it it = _opened.begin(); it != _opened.end(); it++)
+        delete *it;
+    _opened.clear();
+
+    typedef std::set<Grid*, compareHash>::iterator set_it;
+    for(set_it it = _closed.begin(); it != _closed.end(); it++)
+        delete *it;
+    _closed.clear();
 }
 
 void Solver::solve() {

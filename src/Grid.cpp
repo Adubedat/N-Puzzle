@@ -27,6 +27,8 @@ Grid::Grid(const Grid* src){
 }
 
 Grid::~Grid(){
+    _matrix.clear();
+    _history.clear();
 }
 
 std::vector<Grid*> Grid::expand() const{

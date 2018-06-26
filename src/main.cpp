@@ -8,4 +8,5 @@ int     main(int argc, char** argv){
 
     solver->solve();
     solver->display();
+    delete solver;
 }
