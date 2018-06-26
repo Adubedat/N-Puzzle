@@ -1,6 +1,6 @@
 #include "GenerateGrid.hpp"
 
-Grid* const             GenerateRandomGrid(int const &size) {
+Grid*               GenerateRandomGrid(int const &size) {
     std::vector<int>  matrix(size * size);
     unsigned    seed = std::chrono::system_clock::now().time_since_epoch().count();
 
@@ -13,7 +13,7 @@ Grid* const             GenerateRandomGrid(int const &size) {
     return (new Grid(size, matrix));
 }
 
-Grid* const             GenerateGridFromFile(std::string const &src) {
+Grid*            GenerateGridFromFile(std::string const &src) {
     std::ifstream   myFile(src);
     Grid*           grid;
 
@@ -28,7 +28,7 @@ Grid*                   parseFile(std::ifstream &ifs) {
     std::string         line;
     std::vector<int>    finalVector;
     std::vector<int>    lineVector;
-    int                 size;
+    size_t              size;
 
     size = 0;
     while (std::getline(ifs, line)) {
@@ -81,7 +81,7 @@ int                     parseWord(std::string::iterator &it) {
 
 void                    checkMatrixNumbers(std::vector<int> matrix, int const &size) {
     std::sort(matrix.begin(), matrix.end());
-    for (int i = 0; i < matrix.size(); i++) {
+    for (int i = 0; i < static_cast<int>(matrix.size()); i++) {
         if (i != matrix[i])
             throw SyntaxException("Error : puzzle must contain every values from 0 to " + std::to_string(size * size - 1));
     }
@@ -95,12 +95,12 @@ Grid*                    generateSolution(size_t size){
     int                 i = 1;
 
     while (i < len) {
-        while (x < size && matrix[x + y * size] == 0 && i != len) {
+        while (x < static_cast<int>(size) && matrix[x + y * size] == 0 && i != len) {
             matrix[x++ + y * size] = i++;
         }
         x--;
         y++;
-        while (y < size && matrix[x + y * size] == 0 && i != len)
+        while (y < static_cast<int>(size) && matrix[x + y * size] == 0 && i != len)
             matrix[x + y++ * size] = i++;
         y--;
         x--;
@@ -118,11 +118,10 @@ Grid*                    generateSolution(size_t size){
 
 Grid*                   generateRegularSolution(size_t size) {
     std::vector<int>    matrix(size * size, 0);
-    int                 len = matrix.size();
     int                 num = 1;
 
-    for(int y = 0; y < size; y++) {
-        for(int x = 0; x < size; x++) {
+    for(int y = 0; y < static_cast<int>(size); y++) {
+        for(int x = 0; x < static_cast<int>(size); x++) {
             matrix[x + y * size] = num;
             num = (num + 1) % (size * size);
         }

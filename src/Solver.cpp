@@ -1,7 +1,7 @@
 #include "Solver.hpp"
 
 Solver::Solver( Grid* start, Grid* goal, IHeuristic* heuristic):
-                _finalGrid(goal), _result(NULL), _heuristic(heuristic),
+                _heuristic(heuristic), _finalGrid(goal), _result(NULL),
                 _total_selected(0), _total_represented(1) {
     start->addHeuristic(heuristic);
     _opened.insert(start);

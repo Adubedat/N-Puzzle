@@ -12,8 +12,8 @@ int Manhattan::calculateAll(const Grid* const state) const {
     pos goal_pos;
     int number;
 
-    for (int x=0; x < state->getSize(); x++){
-        for (int y=0; y < state->getSize(); y++){
+    for (int x=0; x < static_cast<int>(state->getSize()); x++){
+        for (int y=0; y < static_cast<int>(state->getSize()); y++){
             state_pos = {x, y};
             number = (*state)[state_pos];
             if (number > 0){

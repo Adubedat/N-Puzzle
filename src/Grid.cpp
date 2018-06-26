@@ -34,11 +34,11 @@ std::vector<Grid*> Grid::expand() const{
 
     if (_emptyPos.x > 0)
         children.push_back(_makeChild({-1,0}));
-    if (_emptyPos.x < _size - 1)
+    if (_emptyPos.x < static_cast<int>(_size) - 1)
         children.push_back(_makeChild({1,0}));
     if (_emptyPos.y > 0)
         children.push_back(_makeChild({0,-1}));
-    if (_emptyPos.y < _size - 1)
+    if (_emptyPos.y < static_cast<int>(_size) - 1)
         children.push_back(_makeChild({0,1}));
     return children;
 }
@@ -114,13 +114,15 @@ size_t          Grid::getSize() const{
 
 
 const int&        Grid::operator[](pos position) const{
-    if (position.x < 0 || position.x >= _size || position.y < 0 || position.y >= _size)
+    if (position.x < 0 || position.x >= static_cast<int>(_size) ||
+        position.y < 0 || position.y >= static_cast<int>(_size))
         throw std::out_of_range("Trying to access an element out of the grid.");
     return _matrix[position.y * this->_size + position.x];
 }
 
 int&               Grid::operator[](pos position){
-    if (position.x < 0 || position.x >= _size || position.y < 0 || position.y >= _size)
+    if (position.x < 0 || position.x >= static_cast<int>(_size) ||
+    position.y < 0 || position.y >= static_cast<int>(_size))
         throw std::out_of_range("Trying to access an element out of the grid.");
     return _matrix[position.y * this->_size + position.x];
 }
@@ -133,7 +135,7 @@ std::string const           Grid::toString() const {
 
     std::string str;
 
-    for (int i = 0; i < _matrix.size(); i++) {
+    for (size_t i = 0; i < _matrix.size(); i++) {
         if (i % _size == 0 && i != 0)
             str += "\n";
         else if (i != 0)
@@ -171,15 +173,10 @@ Grid*           Grid::_makeChild(pos dst)const{
     Grid* child = new Grid(this);
     child->_g_cost += 1;
     child->_swap(dst);
-
     // child->_h_cost = _heuristic->update(child, child->_emptyPos - dst);
     child->_h_cost = _heuristic->calculateAll(child);
-
     child->_f_cost = child->_g_cost + child->_h_cost;
     child->_parent = this;
-    // std::cout << child->toString() << std::endl;
-    // std::cout << "g = " << child->get_g_cost() << " , h = " << child->get_h_cost() << ", f = " << child->get_f_cost() << std::endl;
-    // std::cout << std::endl;
     return child;
 }
 

@@ -7,8 +7,8 @@ int     Hamming::calculateAll(const Grid* const state) const {
     int distance = 0;
     pos position;
 
-    for (int x=0; x < _goal->getSize(); x++){
-        for (int y=0; y < _goal->getSize(); y++){
+    for (int x=0; x < static_cast<int>(_goal->getSize()); x++){
+        for (int y=0; y < static_cast<int>(_goal->getSize()); y++){
             position = {x,y};
             if ((*_goal)[position] != 0 && (*_goal)[position] != (*state)[position])
                 distance++;

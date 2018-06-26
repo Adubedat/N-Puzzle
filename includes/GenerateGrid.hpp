@@ -18,8 +18,8 @@ class	SyntaxException : public std::exception
 		std::string	_msg;
 };
 
-Grid* const             GenerateRandomGrid(int const &size);
-Grid* const             GenerateGridFromFile(std::string const &src);
+Grid*             		GenerateRandomGrid(int const &size);
+Grid*		            GenerateGridFromFile(std::string const &src);
 Grid*                   generateSolution(size_t size);
 Grid*					generateRegularSolution(size_t size);
 Grid*                   parseFile(std::ifstream &ifs);
