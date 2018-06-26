@@ -86,7 +86,7 @@ re: fclean all
 ac: all clean
 
 test: $(TEST)
-	@./$(TEST) puzzles/forum.npz
+	@./$(TEST) puzzles/diego
 
 
 .PHONY: all clean fclean re
