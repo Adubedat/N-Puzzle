@@ -41,6 +41,6 @@ int     main(int argc, char** argv){
     else {
         solver.solve();
         solver.display();
-        // solver.destroy();
     }
+    return 0;
 }
