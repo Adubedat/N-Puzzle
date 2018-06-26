@@ -1,4 +1,4 @@
-# Takes 42 Moves to solve
+# Takes 42 Moves to solve - regular
 # https://stackoverflow.com/questions/35552661/can-linear-conflict-heuristic-cause-more-nodes-to-be-created-and-explored-than-m
 4
 2 8 7 11

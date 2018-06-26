@@ -4,12 +4,13 @@
 #include "ManhattanLinearConflict.hpp"
 
 static void         usageMessage( void ) {
-    std::cout << "Usage:\n./n-puzzle [-size n] [file] [-heuristic mlc|man|ham] [-greedy] [-ucost]\n\
+    std::cout << "Usage:\n./n-puzzle [-size n] [file] [-heuristic mlc|man|ham] [-greedy] [-ucost] [-regular]\n\
 \tmlc : Manhattan distance with linear conflict gestion\n\
 \tman : Manhattan distance\n\
 \tham : Hamming\n\
 \t-greedy : Only use heuristic function to find the fastest path\n\
-\t-ucost : Ignore heuristic and explore all the possible paths" << std::endl;
+\t-ucost : Ignore heuristic and explore all the possible paths\n\
+\t-regular: Solve puzzle by rows" << std::endl;
 }
 
 static e_heuristic  checkHeuristic(char* const &str) {
@@ -29,6 +30,7 @@ Solver*             parseOptions(int const &argc, char** const &argv) {
     e_strategy  strategy = NONE;
     IHeuristic* iheuristic = NULL;
     Grid*       goal = NULL;
+    bool        regular = false;
 
     try {
         if (argc < 2)
@@ -42,13 +44,18 @@ Solver*             parseOptions(int const &argc, char** const &argv) {
                 strategy = GREEDY;
             else if (strcmp(argv[i], "-ucost") == 0)
                 strategy = UC;
+            else if (strcmp(argv[i], "-regular") == 0)
+                regular = true;
             else
                 start = GenerateGridFromFile(argv[i]);
         }
         if (start == NULL)
             throw OptionException("Error: Start grid is missing");
         std::cout << "Input grid:" << std::endl << start->toString() << std::endl << std::endl;
-        goal = generateSolution(start->getSize());
+        if (regular)
+            goal = generateRegularSolution(start->getSize());
+        else
+            goal = generateSolution(start->getSize());
         if (! start->isSolvable(goal))
             throw SyntaxException("Error: This puzzle is unsolvable.");
         if (heuristic == mlc)

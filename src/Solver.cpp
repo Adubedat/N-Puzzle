@@ -1,4 +1,5 @@
 #include "Solver.hpp"
+#include <fstream>
 
 Solver::Solver( Grid* start, Grid* goal, IHeuristic* heuristic):
                 _heuristic(heuristic), _finalGrid(goal), _result(NULL),
@@ -74,18 +75,21 @@ bool    Solver::isFinal(Grid* grid) const {
 }
 
 void    Solver::display() const {
+    // Output to screen
     std::cout << "============ SOLVING COMPLETE ===========" << std::endl << std::endl;
     std::cout << "Total number of states ever selected (time complexity): ";
     std::cout << this->_total_selected << std::endl;
     std::cout << "Total number of states ever reprensented (size complexity): ";
     std::cout << this->_total_represented << std::endl;
     std::cout << "Number of moves: " << this->_result->get_g_cost() << std::endl;
+    std::cout << "Writing sequence of moves in 'output.txt'" << std::endl;
 
-    std::cout << std::endl << "Here are all the moves: (Press enter to view the next) " << std::endl;
+    // Output move sequence to a file
+    std::fstream fs("output.txt", std::ios_base::out);
+    fs << "Here are all the moves: " << std::endl;
     std::vector<const Grid*> genealogy = this->_result->getGenealogy();
-    for(std::vector<const Grid*>::iterator it = genealogy.begin(); it != genealogy.end(); it++){
-        std::cin.get();
-        std::cout << (*it)->toString() << std::endl;
-    }
-    std::cout << std::endl << "FINISHED!" << std::endl;
+    for(std::vector<const Grid*>::iterator it = genealogy.begin(); it != genealogy.end(); it++)
+        fs << (*it)->toString() << std::endl << std::endl;
+    fs << std::endl << "FINISHED!" << std::endl;
+    fs.close();
 }

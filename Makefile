@@ -11,10 +11,10 @@ OBJ_PATH = $(OBJ_FOLDER)
 DST_PATH = $(ROOT)
 LFT_PATH =
 
-CC = clang++ -g
+CC = clang++
 CFLAGS = -std=c++11 -Wall -Wextra -Werror
 CPPFLAGS = $(addprefix -I ,$(INC_PATH))
-LDFLAGS = -fsanitize=address
+LDFLAGS =
 LDLIBS =
 
 SRC_NAME =	main.cpp \
@@ -59,13 +59,6 @@ $(DST): $(OBJ) $(INC)
 	printf "\n\e[32m----------------------------------\e[36m"
 	printf "\033[0m\n"
 
-$(TEST): $(filter-out $(OBJ_PATH)/main.o, $(OBJ)) $(OBJ_PATH)/test.o $(INC)
-	$(CC) $(filter-out $(OBJ_PATH)/main.o, $(OBJ)) $(OBJ_PATH)/test.o $(LDFLAGS) $(LDLIBS) -o $(TEST)
-	printf "\e[32m----------------------------------\e[36m\n"
-	printf "\e[32m[✔]\e[36m $@"
-	printf "\n\e[32m----------------------------------\e[36m"
-	printf "\033[0m\n"
-
 clean:
 	printf "\e[36m"
 	@rm -fv $(OBJ)
@@ -86,9 +79,5 @@ fclean: clean
 re: fclean all
 
 ac: all clean
-
-test: $(TEST)
-	@./$(TEST) puzzles/diego
-
 
 .PHONY: all clean fclean re
